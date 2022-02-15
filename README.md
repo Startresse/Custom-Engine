@@ -5,6 +5,23 @@
 This project is an attempt to create a custom **OpenGL ECS engine**.  
 This project is build with Visual Studio, using the *Visual Studio* ***Solutions***.
 
+## Projects
+
+For now I'm reimplementing the library, once done I'll migrate some old projects.
+
+### Mesh viewer
+
+This project is a real time mesh render.
+[Result video](https://youtu.be/csA20fUCOt8)
+
+### Ray tracer
+
+This project is the real time implementation of a ray tracer.
+[Result video](https://youtu.be/ZRVq3qCNzlI)
+
+
+
+
 ## Configure openGL project
 
 
@@ -27,3 +44,11 @@ This project is build with Visual Studio, using the *Visual Studio* ***Solutions
     * `glfw3.lib;`
 
 From : [Modern OpenGL 3.0+ Visual Studio 2017 [SETUP] GLFW and GLEW on Windows](https://www.youtube.com/watch?v=gCkcP0GcCe0)
+
+## Credits
+
+This code is my own.
+
+It is greatly inspired by *Jean Claude Iehl*'s [***gkit2light***](https://perso.univ-lyon1.fr/jean-claude.iehl/Public/educ/M1IMAGE/html/index.html) which was a learning support in Uni.
+It's basically a super light version of it coded from scratch for me to learn every aspect of OpenGL coding, use modern GL libraries and have personal project for myself.
+It is planned that I graduately migrate my Uni work on *gkit2light* to this public repos.
