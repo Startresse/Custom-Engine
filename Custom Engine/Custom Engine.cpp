@@ -42,6 +42,12 @@ const GLchar* fragmentShaderSource =
 "color = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
 "}\n\0";
 
+// Warning : called on every frame but displayed only on realese...
+void framebuffer_size_callback(GLFWwindow* window, int width, int height)
+{
+    glViewport(0, 0, width, height);
+}
+
 int main()
 {
     // Init GLFW
@@ -52,8 +58,6 @@ int main()
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
-    
     // Create a GLFWwindow object that we can use for GLFW's functions
     GLFWwindow *window = glfwCreateWindow(resolution.first, resolution.second, window_name.c_str(), nullptr, nullptr);
     if (window == nullptr)
@@ -75,8 +79,13 @@ int main()
         return EXIT_FAILURE;
     }
     
-    glViewport( 0, 0, screenWidth, screenHeight );
-    
+    glViewport(0, 0, screenWidth, screenHeight);
+
+    // Set window size change callback
+    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+
+
+        // ** Program ** //
     
     // Build and compile our shader program
     // Vertex shader
@@ -152,8 +161,10 @@ int main()
     
     glBindVertexArray( 0 ); // Unbind VAO (it's always a good thing to unbind any buffer/array to prevent strange bugs)
     
-    // Game loop
-    while ( !glfwWindowShouldClose( window ) )
+
+    // ** LOOP ** //
+
+    while (!glfwWindowShouldClose(window))
     {
         // Check if any events have been activiated (key pressed, mouse moved etc.) and call corresponding response functions
         glfwPollEvents( );
@@ -169,8 +180,8 @@ int main()
         glDrawArrays( GL_TRIANGLES, 0, 3 );
         glBindVertexArray( 0 );
         
-        // Swap the screen buffers
-        glfwSwapBuffers( window );
+        // Display calculated framebuffer (back to front) and prepares displayed framebuffer to be drawn (front to back)
+        glfwSwapBuffers(window);
     }
     
     // Properly de-allocate all resources once they've outlived their purpose
