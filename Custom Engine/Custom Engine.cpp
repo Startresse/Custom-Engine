@@ -1,13 +1,7 @@
-// std includes
-#include <iostream>
 #include <vector>
 
-// OpenGL includes
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
-
-// Project includes
 #include "App.h"
+#include "App1.h"
 
 typedef unsigned int uint;
 
@@ -31,9 +25,8 @@ int main()
     uint resolution_type = 3;
     resolution_t resolution = standard_resolutions[resolution_type];
 
-    App app(resolution.first, resolution.second);
+    App1 app(resolution.first, resolution.second);
     app.run();
-
     
-    return EXIT_SUCCESS;
+    return 0;
 }
