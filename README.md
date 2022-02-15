@@ -7,7 +7,6 @@ This project is build with Visual Studio, using the *Visual Studio* ***Solutions
 
 ## Configure openGL project
 
-From : [Modern OpenGL 3.0+ Visual Studio 2017 [SETUP] GLFW and GLEW on Windows](https://www.youtube.com/watch?v=gCkcP0GcCe0)
 
 * Download Binaries
   * [GLEW](http://glew.sourceforge.net/index.html)
@@ -27,3 +26,4 @@ From : [Modern OpenGL 3.0+ Visual Studio 2017 [SETUP] GLFW and GLEW on Windows](
     * `glew32.lib;`
     * `glfw3.lib;`
 
+From : [Modern OpenGL 3.0+ Visual Studio 2017 [SETUP] GLFW and GLEW on Windows](https://www.youtube.com/watch?v=gCkcP0GcCe0)
