@@ -1,68 +1,80 @@
+// std includes
 #include <iostream>
+#include <vector>
 
-// GLEW
+// OpenGL includes
 #include <GL/glew.h>
-
-// GLFW
 #include <GLFW/glfw3.h>
 
+typedef unsigned int uint;
+
 // Window dimensions
-const GLuint WIDTH = 800, HEIGHT = 600;
+typedef std::pair<uint, uint> resolution_t;
+const std::vector<resolution_t> standard_resolutions =
+{
+    {640, 480},
+    {1024, 576},
+    {1280, 720},
+    {1366, 768},
+    {1600, 900},
+    {1920, 1080},
+    {2560, 1440},
+    {3840, 2160}
+};
+const resolution_t resolution = standard_resolutions[3];
+
+const std::string window_name = "Main Window";
+
 
 // Shaders
-const GLchar* vertexShaderSource = "#version 330 core\n"
+const GLchar* vertexShaderSource =
+"#version 330 core\n"
 "layout (location = 0) in vec3 position;\n"
 "void main()\n"
 "{\n"
 "gl_Position = vec4(position.x, position.y, position.z, 1.0);\n"
 "}\0";
-const GLchar* fragmentShaderSource = "#version 330 core\n"
+const GLchar* fragmentShaderSource =
+"#version 330 core\n"
 "out vec4 color;\n"
 "void main()\n"
 "{\n"
 "color = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
 "}\n\0";
 
-// The MAIN function, from here we start the application and run the game loop
 int main()
 {
     // Init GLFW
-    glfwInit( );
+    glfwInit();
     
     // Set all the required options for GLFW
-    glfwWindowHint( GLFW_CONTEXT_VERSION_MAJOR, 3 );
-    glfwWindowHint( GLFW_CONTEXT_VERSION_MINOR, 3 );
-    glfwWindowHint( GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE );
-    glfwWindowHint( GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE );
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);  // OpenGL 4.6
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    glfwWindowHint( GLFW_RESIZABLE, GL_FALSE );
+	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
     
     // Create a GLFWwindow object that we can use for GLFW's functions
-    GLFWwindow *window = glfwCreateWindow( WIDTH, HEIGHT, "LearnOpenGL", nullptr, nullptr );
-    
-    int screenWidth, screenHeight;
-    glfwGetFramebufferSize( window, &screenWidth, &screenHeight );
-    
-    if ( nullptr == window )
+    GLFWwindow *window = glfwCreateWindow(resolution.first, resolution.second, window_name.c_str(), nullptr, nullptr);
+    if (window == nullptr)
     {
         std::cout << "Failed to create GLFW window" << std::endl;
-        glfwTerminate( );
-        
+        glfwTerminate();
         return EXIT_FAILURE;
     }
+    glfwMakeContextCurrent(window);
     
-    glfwMakeContextCurrent( window );
+    int screenWidth, screenHeight;
+    glfwGetFramebufferSize(window, &screenWidth, &screenHeight);
     
-    // Set this to true so GLEW knows to use a modern approach to retrieving function pointers and extensions
+    // use GLEW modern approach to retrieving function pointers and extensions
     glewExperimental = GL_TRUE;
-    // Initialize GLEW to setup the OpenGL Function pointers
-    if ( GLEW_OK != glewInit( ) )
+    if (glewInit() != GLEW_OK)
     {
         std::cout << "Failed to initialize GLEW" << std::endl;
         return EXIT_FAILURE;
     }
     
-    // Define the viewport dimensions
     glViewport( 0, 0, screenWidth, screenHeight );
     
     
