@@ -7,17 +7,18 @@ This project is build with Visual Studio, using the *Visual Studio* ***Solutions
 
 ## Projects
 
-For now I'm reimplementing the library, once done I'll migrate some old projects.
+For now I'm reimplementing the library (see [Credits](#Credits)). Once done I'll migrate some old projects.
 
 ### Mesh viewer
 
-This project is a real time mesh render.
-[Result video](https://youtu.be/csA20fUCOt8)
+This project is a real time mesh renderer.
+[![Online render video](https://img.youtube.com/vi/csA20fUCOt8/0.jpg)](https://youtu.be/csA20fUCOt8)
 
 ### Ray tracer
 
 This project is the real time implementation of a ray tracer.
-[Result video](https://youtu.be/ZRVq3qCNzlI)
+[![Ray tracer video](https://img.youtube.com/vi/ZRVq3qCNzlI/0.jpg)](https://youtu.be/ZRVq3qCNzlI)
+
 
 
 
