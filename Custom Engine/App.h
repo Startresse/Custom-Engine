@@ -10,6 +10,10 @@
 typedef unsigned int uint;
 typedef GLFWwindow* Window;
 
+/// <summary>
+/// Virtual class that takes care of creating an OpenGL context and window.
+/// Override the three main fonctions to create an OpenGL application.
+/// </summary>
 class App
 {
 public:
@@ -31,8 +35,24 @@ protected:
 	int width;
 	int height;
 
+	/// <summary>
+	/// Used first and once at the run() function call.
+	/// </summary>
+	/// <returns>>=0 if it worked, some other integer otherwise.</returns>
 	virtual int init() = 0;
+
+	/// <summary>
+	/// Used in the loop of the run() function.
+	/// Each frame is a call to render().
+	/// </summary>
+	/// <returns>>=0 if it worked, some other integer otherwise.</returns>
 	virtual int render() = 0;
+
+	/// <summary>
+	/// Used run() function.
+	/// Each frame is a call to render().
+	/// </summary>
+	/// <returns>>=0 if it worked, some other integer otherwise.</returns>
 	virtual int quit() = 0;
 
 	int window_width();

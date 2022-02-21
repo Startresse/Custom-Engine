@@ -89,6 +89,9 @@ int App::run()
         render();
     }
 
+    if(quit() < 0)
+		return -1;
+
 	return 0;
 }
 
