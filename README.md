@@ -1,9 +1,11 @@
 # Custom Engine
 
+
 ## What is it
 
 This project is an attempt to create a custom **OpenGL ECS engine**.  
 This project is build with Visual Studio, using the *Visual Studio* ***Solutions***.
+
 
 ## Projects
 
@@ -22,15 +24,19 @@ This project is the real time implementation of a ray tracer.
 [![Ray tracer video](https://img.youtube.com/vi/ZRVq3qCNzlI/0.jpg)](https://youtu.be/ZRVq3qCNzlI)
 
 
+## Configure External ressources
 
-
-
-## Configure openGL project
-
+### With the pre config
 
 * Download Binaries
   * [GLEW](http://glew.sourceforge.net/index.html)
   * [GLFW](https://www.glfw.org/download.html)
+  * [Eigen](https://eigen.tuxfamily.org/index.php?title=Main_Page)
+* Create a folder named ***External Ressources*** in the same root folder as this repos (one folder above the VS-solution).
+* Put folders in this directory named ***GLEW***, ***GLFW*** and ***Eigen***. This should be enough, the VS solution should handle the rest.
+
+### Redoing it manually
+
 * Create Empty VS project and create *.cpp* file
 * *project > properties*
   * *configurations : all configurations*
@@ -38,6 +44,7 @@ This project is the real time implementation of a ray tracer.
   * *C/C++ > General > Additional Include Directories*
     * `$(path_to_glfw)\GLFW\include;`
     * `$(path_to_glew)\GLEW\include;`
+    * `$(path_to_eigen)\Eigen\`
   * *Linker > General > Additional Library Directories*
     * `$(path_to_glfw)\GLFW\lib-vc2022;`
     * `$(path_to_glew)\GLEW\lib\Release\x64;`
@@ -47,6 +54,7 @@ This project is the real time implementation of a ray tracer.
     * `glfw3.lib;`
 
 From : [Modern OpenGL 3.0+ Visual Studio 2017 [SETUP] GLFW and GLEW on Windows](https://www.youtube.com/watch?v=gCkcP0GcCe0)
+
 
 ## Credits
 
