@@ -1,7 +1,7 @@
 #pragma once
 
 #include "App.h"
-
+#include "Shader.h"
 
 /// <summary>
 /// Exemple from https://learnopengl.com/ to check for tests and dev.
