@@ -1,5 +1,9 @@
 #pragma once
 
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
 #include "App.h"
 #include "Shader.h"
 
@@ -16,7 +20,7 @@ public:
 	int quit();
 
 private:
-    GLuint VBO, VAO;
+    GLuint VBO, VAO, EBO;
 	GLuint shaderProgram;
 
 };
