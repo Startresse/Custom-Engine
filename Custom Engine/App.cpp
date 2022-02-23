@@ -12,7 +12,7 @@ Window App::create_window(int w, int h, int major, int minor)
 {
     // Init GLFW
     glfwInit();
-    
+
     // Set all the required options for GLFW
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, major);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, minor);
@@ -30,7 +30,7 @@ Window App::create_window(int w, int h, int major, int minor)
     glfwMakeContextCurrent(window);
 
     glfwGetFramebufferSize(window, &width, &height);
-    
+
     // use GLEW modern approach to retrieving function pointers and extensions
     glewExperimental = GL_TRUE;
     if (glewInit() != GLEW_OK)
@@ -48,7 +48,7 @@ Window App::create_window(int w, int h, int major, int minor)
 
 int App::key_state(int key_code)
 {
-    return glfwGetKey(window, key_code);
+    return;
 }
 
 int App::window_width()
@@ -65,8 +65,8 @@ int App::window_height()
 
 int App::run()
 {
-	if (init() < 0)
-		return -1;
+    if (init() < 0)
+        return -1;
 
     glViewport(0, 0, window_width(), window_height());
 
@@ -75,10 +75,10 @@ int App::run()
         render();
     }
 
-    if(quit() < 0)
-		return -1;
+    if (quit() < 0)
+        return -1;
 
-	return 0;
+    return 0;
 }
 
 App::~App()

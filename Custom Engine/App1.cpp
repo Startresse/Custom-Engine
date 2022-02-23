@@ -43,72 +43,72 @@ int App1::init()
 
 #endif
 
-    glGenVertexArrays( 1, &VAO );
-    glGenBuffers( 1, &VBO );
+    glGenVertexArrays(1, &VAO);
+    glGenBuffers(1, &VBO);
     // Bind the Vertex Array Object first, then bind and set vertex buffer(s) and attribute pointer(s).
-    glBindVertexArray( VAO );
-    
-    glBindBuffer( GL_ARRAY_BUFFER, VBO );
-    glBufferData( GL_ARRAY_BUFFER, sizeof( vertices ), vertices, GL_STATIC_DRAW );
-    
+    glBindVertexArray(VAO);
+
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
     // position
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
 
     // color
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3* sizeof(float)));
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
-    
-    glBindBuffer( GL_ARRAY_BUFFER, 0 ); // Note that this is allowed, the call to glVertexAttribPointer registered VBO as the currently bound vertex buffer object so afterwards we can safely unbind
-    
-    glBindVertexArray( 0 ); // Unbind VAO (it's always a good thing to unbind any buffer/array to prevent strange bugs)
-    
-	return 0;
+
+    glBindBuffer(GL_ARRAY_BUFFER, 0); // Note that this is allowed, the call to glVertexAttribPointer registered VBO as the currently bound vertex buffer object so afterwards we can safely unbind
+
+    glBindVertexArray(0); // Unbind VAO (it's always a good thing to unbind any buffer/array to prevent strange bugs)
+
+    return 0;
 }
 
 int App1::render()
 {
-	// Check if any events have been activiated (key pressed, mouse moved etc.) and call corresponding response functions
-	glfwWaitEvents( );
-	
-	// Render
-	// Clear the colorbuffer
-	glClearColor( 0.2f, 0.3f, 0.3f, 1.0f );
-	glClear( GL_COLOR_BUFFER_BIT );
+    // Check if any events have been activiated (key pressed, mouse moved etc.) and call corresponding response functions
+    glfwWaitEvents();
+
+    // Render
+    // Clear the colorbuffer
+    glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT);
 
     glm::mat4 trans = glm::mat4(1.0);
     //trans = glm::translate(trans, glm::vec3(0.5, 0.5, 0.0));
 
     if (key_state(GLFW_KEY_W))
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     else
-		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-	
-	glUseProgram( shaderProgram );
+        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
+    glUseProgram(shaderProgram);
 
     glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "transform"), 1, GL_FALSE, glm::value_ptr(trans));
 
-	glBindVertexArray( VAO );
+    glBindVertexArray(VAO);
 #ifdef TRIANGLE
-	glDrawArrays( GL_TRIANGLES, 0, 3 );
+    glDrawArrays(GL_TRIANGLES, 0, 3);
 #else
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 #endif
-	glBindVertexArray( 0 );
-	
-	// Display calculated framebuffer (back to front) and prepares displayed framebuffer to be drawn (front to back)
-	glfwSwapBuffers(window);
+    glBindVertexArray(0);
 
-	return 0;
+    // Display calculated framebuffer (back to front) and prepares displayed framebuffer to be drawn (front to back)
+    glfwSwapBuffers(window);
+
+    return 0;
 }
 
 int App1::quit()
 {
     // Properly de-allocate all resources once they've outlived their purpose
-    glDeleteVertexArrays( 1, &VAO );
-    glDeleteBuffers( 1, &VBO );
+    glDeleteVertexArrays(1, &VAO);
+    glDeleteBuffers(1, &VBO);
 
-	return 0;
+    return 0;
 }

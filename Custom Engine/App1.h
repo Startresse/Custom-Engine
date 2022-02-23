@@ -13,15 +13,15 @@
 class App1 : public App
 {
 public:
-	using App::App;
+    using App::App;
 
-	int init();
-	int render();
-	int quit();
+    int init();
+    int render();
+    int quit();
 
 private:
     GLuint VBO, VAO, EBO;
-	GLuint shaderProgram;
+    GLuint shaderProgram;
 
 };
 

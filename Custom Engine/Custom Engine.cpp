@@ -27,6 +27,6 @@ int main()
 
     App1 app(resolution.first, resolution.second);
     app.run();
-    
+
     return 0;
 }

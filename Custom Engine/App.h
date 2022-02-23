@@ -17,50 +17,50 @@ typedef GLFWwindow* Window;
 class App
 {
 public:
-	App() : App(640, 480) {}
-	App(uint window_width, uint window_height) : App(window_width, window_height, 4, 6) {}
+    App() : App(640, 480) {}
+    App(uint window_width, uint window_height) : App(window_width, window_height, 4, 6) {}
 
-	App(uint window_width, uint window_height, int major_gl_version, int minor_gl_version) :
-		window(nullptr)
-	{
-		window = create_window(window_width, window_height, major_gl_version, minor_gl_version);
-	}
+    App(uint window_width, uint window_height, int major_gl_version, int minor_gl_version) :
+        window(nullptr)
+    {
+        window = create_window(window_width, window_height, major_gl_version, minor_gl_version);
+    }
 
-	~App();
+    ~App();
 
-	int run();
+    int run();
 
 protected:
-	Window window;
-	int width;
-	int height;
+    Window window;
+    int width;
+    int height;
 
-	/// <summary>
-	/// Used first and once at the run() function call.
-	/// </summary>
-	/// <returns>>=0 if it worked, some other integer otherwise.</returns>
-	virtual int init() = 0;
+    /// <summary>
+    /// Used first and once at the run() function call.
+    /// </summary>
+    /// <returns>>=0 if it worked, some other integer otherwise.</returns>
+    virtual int init() = 0;
 
-	/// <summary>
-	/// Used in the loop of the run() function.
-	/// Each frame is a call to render().
-	/// </summary>
-	/// <returns>>=0 if it worked, some other integer otherwise.</returns>
-	virtual int render() = 0;
+    /// <summary>
+    /// Used in the loop of the run() function.
+    /// Each frame is a call to render().
+    /// </summary>
+    /// <returns>>=0 if it worked, some other integer otherwise.</returns>
+    virtual int render() = 0;
 
-	/// <summary>
-	/// Used run() function.
-	/// Each frame is a call to render().
-	/// </summary>
-	/// <returns>>=0 if it worked, some other integer otherwise.</returns>
-	virtual int quit() = 0;
+    /// <summary>
+    /// Used run() function.
+    /// Each frame is a call to render().
+    /// </summary>
+    /// <returns>>=0 if it worked, some other integer otherwise.</returns>
+    virtual int quit() = 0;
 
-	int window_width();
-	int window_height();
+    int window_width();
+    int window_height();
 
-	Window create_window(int width, int height, int major, int minor);
+    Window create_window(int width, int height, int major, int minor);
 
-	int key_state(int key_code);
+    int key_state(int key_code);
 
 };
 
