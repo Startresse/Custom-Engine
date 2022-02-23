@@ -48,7 +48,7 @@ Window App::create_window(int w, int h, int major, int minor)
 
 int App::key_state(int key_code)
 {
-    return;
+    return glfwGetKey(window, key_code);
 }
 
 int App::window_width()

@@ -20,18 +20,36 @@ int App1::init()
 
 #else
 
+    // Square
+    //GLfloat vertices[] =
+    //{
+    //    // positions            // colors
+    //     0.5f,  0.5f, 0.0f,     1.0f, 0.0f, 0.0f,         // Top Right
+    //     0.5f, -0.5f, 0.0f,     0.0f, 1.0f, 0.0f,         // Bottomt Right
+    //    -0.5f, -0.5f, 0.0f,     0.0f, 0.0f, 1.0f,         // Bottomt Left
+    //    -0.5f,  0.5f, 0.0f,     1.0f, 0.0f, 1.0f,         // Top Left
+    //};
+    //uint indices[] =
+    //{
+    //    0, 1, 3,    // First triangle
+    //    1, 2, 3,    // Second triangle
+    //};
+
+    // Tetra
     GLfloat vertices[] =
     {
         // positions            // colors
-         0.5f,  0.5f, 0.0f,     1.0f, 0.0f, 0.0f,         // Top Right
-         0.5f, -0.5f, 0.0f,     0.0f, 1.0f, 0.0f,         // Bottomt Right
-        -0.5f, -0.5f, 0.0f,     0.0f, 0.0f, 1.0f,         // Bottomt Left
-        -0.5f,  0.5f, 0.0f,     1.0f, 0.0f, 1.0f,         // Top Left
+        -0.5f, -0.5f, 0.0f,     1.0f, 0.0f, 0.0f,
+         0.5f, -0.5f, 0.0f,     0.0f, 1.0f, 0.0f,
+         0.0f,  0.5f, 0.0f,     0.0f, 0.0f, 1.0f,
+         0.0f,  0.0f, 0.5f,     0.0f, 0.0f, 0.0f,
     };
     uint indices[] =
     {
-        0, 1, 3,    // First triangle
-        1, 2, 3,    // Second triangle
+        0, 1, 2,
+        0, 1, 3,
+        1, 2, 3,
+        0, 2, 3,
     };
 
 
@@ -69,7 +87,7 @@ int App1::init()
 int App1::render()
 {
     // Check if any events have been activiated (key pressed, mouse moved etc.) and call corresponding response functions
-    glfwWaitEvents();
+    glfwPollEvents();
 
     // Render
     // Clear the colorbuffer
@@ -77,7 +95,7 @@ int App1::render()
     glClear(GL_COLOR_BUFFER_BIT);
 
     glm::mat4 trans = glm::mat4(1.0);
-    //trans = glm::translate(trans, glm::vec3(0.5, 0.5, 0.0));
+    trans = glm::rotate(trans, (float)glfwGetTime(), glm::vec3(0.5, 0.5, 0.0));
 
     if (key_state(GLFW_KEY_W))
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -93,7 +111,7 @@ int App1::render()
     glDrawArrays(GL_TRIANGLES, 0, 3);
 #else
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+    glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, 0);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 #endif
     glBindVertexArray(0);
