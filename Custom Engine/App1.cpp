@@ -7,7 +7,7 @@ int App1::init()
 
     // Set up vertex data (and buffer(s)) and attribute pointers
 
-    mesh = read_mesh("square.3do");
+    mesh = read_mesh("tetra.3do");
     mesh.generate_buffers();
 
     // Square
@@ -21,12 +21,12 @@ int App1::render()
     glfwPollEvents();
 
     // Render
-    // Clear the colorbuffer
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
+    glClear(GL_DEPTH_BUFFER_BIT); 
 
     glm::mat4 trans = glm::mat4(1.0);
-    trans = glm::rotate(trans, (float)glfwGetTime(), glm::vec3(0.5, 0.5, 0.0));
+    trans = glm::rotate(trans, (float)glfwGetTime(), glm::normalize(glm::vec3(0.5, 0.5, 0.0)));
 
     if (key_state(GLFW_KEY_W))
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
