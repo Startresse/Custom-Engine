@@ -148,6 +148,7 @@
     <ClCompile Include="App.cpp" />
     <ClCompile Include="App1.cpp" />
     <ClCompile Include="Custom Engine.cpp" />
+    <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="Shader.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -158,6 +159,7 @@
   <ItemGroup>
     <ClInclude Include="App.h" />
     <ClInclude Include="App1.h" />
+    <ClInclude Include="Mesh.h" />
     <ClInclude Include="Shader.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

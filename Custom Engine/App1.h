@@ -6,6 +6,7 @@
 
 #include "App.h"
 #include "Shader.h"
+#include "Mesh.h"
 
 /// <summary>
 /// Exemple from https://learnopengl.com/ to check for tests and dev.
@@ -22,6 +23,8 @@ public:
 private:
     GLuint VBO, VAO, EBO;
     GLuint shaderProgram;
+
+    Mesh mesh;
 
 };
 

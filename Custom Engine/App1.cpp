@@ -7,9 +7,6 @@ int App1::init()
 
     // Set up vertex data (and buffer(s)) and attribute pointers
 
-//#define TRIANGLE
-#ifdef TRIANGLE
-
     GLfloat vertices[] =
     {
         // positions            // colors
@@ -17,8 +14,10 @@ int App1::init()
          0.5f, -0.5f, 0.0f,     0.0f, 1.0f, 0.0f,         // Right
          0.0f,  0.5f, 0.0f,     0.0f, 0.0f, 1.0f,         // Top
     };
-
-#else
+    uint indices[] =
+    {
+        0, 1, 2,
+    };
 
     // Square
     //GLfloat vertices[] =
@@ -35,22 +34,22 @@ int App1::init()
     //    1, 2, 3,    // Second triangle
     //};
 
-    // Tetra
-    GLfloat vertices[] =
-    {
-        // positions            // colors
-        -0.5f, -0.5f, 0.0f,     1.0f, 0.0f, 0.0f,
-         0.5f, -0.5f, 0.0f,     0.0f, 1.0f, 0.0f,
-         0.0f,  0.5f, 0.0f,     0.0f, 0.0f, 1.0f,
-         0.0f,  0.0f, 0.5f,     0.0f, 0.0f, 0.0f,
-    };
-    uint indices[] =
-    {
-        0, 1, 2,
-        0, 1, 3,
-        1, 2, 3,
-        0, 2, 3,
-    };
+    //// Tetra
+    //GLfloat vertices[] =
+    //{
+    //    // positions            // colors
+    //    -0.5f, -0.5f, 0.0f,     1.0f, 0.0f, 0.0f,
+    //     0.5f, -0.5f, 0.0f,     0.0f, 1.0f, 0.0f,
+    //     0.0f,  0.5f, 0.0f,     0.0f, 0.0f, 1.0f,
+    //     0.0f,  0.0f, 0.5f,     0.0f, 0.0f, 0.0f,
+    //};
+    //uint indices[] =
+    //{
+    //    0, 1, 2,
+    //    0, 1, 3,
+    //    1, 2, 3,
+    //    0, 2, 3,
+    //};
 
 
     glGenBuffers(1, &EBO);
@@ -58,8 +57,6 @@ int App1::init()
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-
-#endif
 
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
@@ -80,6 +77,8 @@ int App1::init()
     glBindBuffer(GL_ARRAY_BUFFER, 0); // Note that this is allowed, the call to glVertexAttribPointer registered VBO as the currently bound vertex buffer object so afterwards we can safely unbind
 
     glBindVertexArray(0); // Unbind VAO (it's always a good thing to unbind any buffer/array to prevent strange bugs)
+
+    mesh = read_mesh("");
 
     return 0;
 }
@@ -107,13 +106,9 @@ int App1::render()
     glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "transform"), 1, GL_FALSE, glm::value_ptr(trans));
 
     glBindVertexArray(VAO);
-#ifdef TRIANGLE
-    glDrawArrays(GL_TRIANGLES, 0, 3);
-#else
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
     glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, 0);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-#endif
     glBindVertexArray(0);
 
     // Display calculated framebuffer (back to front) and prepares displayed framebuffer to be drawn (front to back)
