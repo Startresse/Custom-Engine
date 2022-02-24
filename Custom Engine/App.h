@@ -7,7 +7,8 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-typedef unsigned int uint;
+#include "Typedefs.h"
+
 typedef GLFWwindow* Window;
 
 /// <summary>
