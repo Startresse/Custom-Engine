@@ -7,78 +7,10 @@ int App1::init()
 
     // Set up vertex data (and buffer(s)) and attribute pointers
 
-    GLfloat vertices[] =
-    {
-        // positions            // colors
-        -0.5f, -0.5f, 0.0f,     1.0f, 0.0f, 0.0f,         // Left
-         0.5f, -0.5f, 0.0f,     0.0f, 1.0f, 0.0f,         // Right
-         0.0f,  0.5f, 0.0f,     0.0f, 0.0f, 1.0f,         // Top
-    };
-    uint indices[] =
-    {
-        0, 1, 2,
-    };
+    mesh = read_mesh("");
+    mesh.generate_buffers();
 
     // Square
-    //GLfloat vertices[] =
-    //{
-    //    // positions            // colors
-    //     0.5f,  0.5f, 0.0f,     1.0f, 0.0f, 0.0f,         // Top Right
-    //     0.5f, -0.5f, 0.0f,     0.0f, 1.0f, 0.0f,         // Bottomt Right
-    //    -0.5f, -0.5f, 0.0f,     0.0f, 0.0f, 1.0f,         // Bottomt Left
-    //    -0.5f,  0.5f, 0.0f,     1.0f, 0.0f, 1.0f,         // Top Left
-    //};
-    //uint indices[] =
-    //{
-    //    0, 1, 3,    // First triangle
-    //    1, 2, 3,    // Second triangle
-    //};
-
-    //// Tetra
-    //GLfloat vertices[] =
-    //{
-    //    // positions            // colors
-    //    -0.5f, -0.5f, 0.0f,     1.0f, 0.0f, 0.0f,
-    //     0.5f, -0.5f, 0.0f,     0.0f, 1.0f, 0.0f,
-    //     0.0f,  0.5f, 0.0f,     0.0f, 0.0f, 1.0f,
-    //     0.0f,  0.0f, 0.5f,     0.0f, 0.0f, 0.0f,
-    //};
-    //uint indices[] =
-    //{
-    //    0, 1, 2,
-    //    0, 1, 3,
-    //    1, 2, 3,
-    //    0, 2, 3,
-    //};
-
-
-    glGenBuffers(1, &EBO);
-
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-
-    glGenVertexArrays(1, &VAO);
-    glGenBuffers(1, &VBO);
-    // Bind the Vertex Array Object first, then bind and set vertex buffer(s) and attribute pointer(s).
-    glBindVertexArray(VAO);
-
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-    // position
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
-
-    // color
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
-    glEnableVertexAttribArray(1);
-
-    glBindBuffer(GL_ARRAY_BUFFER, 0); // Note that this is allowed, the call to glVertexAttribPointer registered VBO as the currently bound vertex buffer object so afterwards we can safely unbind
-
-    glBindVertexArray(0); // Unbind VAO (it's always a good thing to unbind any buffer/array to prevent strange bugs)
-
-    mesh = read_mesh("");
 
     return 0;
 }
@@ -105,11 +37,7 @@ int App1::render()
 
     glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "transform"), 1, GL_FALSE, glm::value_ptr(trans));
 
-    glBindVertexArray(VAO);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, 0);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-    glBindVertexArray(0);
+    mesh.draw();
 
     // Display calculated framebuffer (back to front) and prepares displayed framebuffer to be drawn (front to back)
     glfwSwapBuffers(window);
@@ -119,9 +47,6 @@ int App1::render()
 
 int App1::quit()
 {
-    // Properly de-allocate all resources once they've outlived their purpose
-    glDeleteVertexArrays(1, &VAO);
-    glDeleteBuffers(1, &VBO);
 
     return 0;
 }

@@ -21,7 +21,6 @@ public:
     int quit();
 
 private:
-    GLuint VBO, VAO, EBO;
     GLuint shaderProgram;
 
     Mesh mesh;

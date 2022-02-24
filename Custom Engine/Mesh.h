@@ -13,14 +13,19 @@ class Mesh
 {
 public:
 
-    Mesh() : VAO(0), VBO(0), EBO(0), nb_vertices(0), nb_triangles(0) {};
+    Mesh() : VAO(0), VBO(0), EBO(0) {};
 
     ~Mesh();
 
+    int generate_buffers();
+
+    void draw();
+
     uint VAO, VBO, EBO;
 
-    size_t nb_vertices;
-    size_t nb_triangles;
+    size_t nb_vertices() { return indices.size(); }
+    size_t nb_indices() { return indices.size(); }
+    size_t nb_triangles() { return indices.size() / 3; }
 
     std::vector<float> vertices;
     std::vector<uint> indices;
