@@ -1,5 +1,8 @@
 #include "Mesh.h"
 
+#include <sstream>
+#include <fstream>
+
 Mesh::~Mesh()
 {
     if (VAO)
@@ -14,51 +17,73 @@ Mesh read_mesh(std::string filepath)
 {
     Mesh mesh;
 
-    /// Triangle
-    //mesh.vertices =
-    //{
-    //    // positions            // colors
-    //    -0.5f, -0.5f, 0.0f,     1.0f, 0.0f, 0.0f,         // Left
-    //     0.5f, -0.5f, 0.0f,     0.0f, 1.0f, 0.0f,         // Right
-    //     0.0f,  0.5f, 0.0f,     0.0f, 0.0f, 1.0f,         // Top
-    //};
-    //mesh.indices =
-    //{
-    //    0, 1, 2,
-    //};
+    std::ifstream file;
 
-    // Square
-    mesh.vertices =
+    file.open(filepath);
+    if (!file.is_open()) {
+        std::cout << "Couldn't open file" << std::endl;
+        exit(0);
+    }
+
+    std::string line;
+
+    // Read vertices
+    while (std::getline(file, line))
     {
-        // positions            // colors
-         0.5f,  0.5f, 0.0f,     1.0f, 0.0f, 0.0f,         // Top Right
-         0.5f, -0.5f, 0.0f,     0.0f, 1.0f, 0.0f,         // Bottomt Right
-        -0.5f, -0.5f, 0.0f,     0.0f, 0.0f, 1.0f,         // Bottomt Left
-        -0.5f,  0.5f, 0.0f,     1.0f, 0.0f, 1.0f,         // Top Left
-    };
-    mesh.indices =
+
+        if (line[0] == '#')
+            continue;
+
+        std::stringstream ss(line);
+        float x, y, z;
+        ss >> x >> y;
+        if (!(ss >> z))
+            break;
+
+        mesh.vertices.push_back(x);
+        mesh.vertices.push_back(y);
+        mesh.vertices.push_back(z);
+
+    }
+
+    // Read color
+    while (std::getline(file, line))
     {
-        0, 1, 3,    // First triangle
-        1, 2, 3,    // Second triangle
-    };
 
+        if (line[0] == '#')
+            continue;
 
-    //// Tetra
-    //mesh.vertices =
-    //{
-    //    // positions            // colors
-    //    -0.5f, -0.5f, 0.0f,     1.0f, 0.0f, 0.0f,
-    //     0.5f, -0.5f, 0.0f,     0.0f, 1.0f, 0.0f,
-    //     0.0f,  0.5f, 0.0f,     0.0f, 0.0f, 1.0f,
-    //     0.0f,  0.0f, 0.5f,     0.0f, 0.0f, 0.0f,
-    //};
-    //mesh.indices =
-    //{
-    //    0, 1, 2,
-    //    0, 1, 3,
-    //    1, 2, 3,
-    //    0, 2, 3,
-    //};
+        std::stringstream ss(line);
+        float x, y, z;
+        ss >> x >> y;
+        if (!(ss >> z))
+            break;
+
+        mesh.vertices.push_back(x);
+        mesh.vertices.push_back(y);
+        mesh.vertices.push_back(z);
+
+    }
+
+    // Read indices
+    while (std::getline(file, line))
+    {
+
+        if (line[0] == '#')
+            continue;
+
+        int a, b, c;
+        std::stringstream ss(line);
+        ss >> a >> b;
+        if (!(ss >> c))
+            break;
+        mesh.indices.push_back(a);
+        mesh.indices.push_back(b);
+        mesh.indices.push_back(c);
+
+    }
+
+    file.close();
 
     return mesh;
 }
@@ -79,11 +104,11 @@ int Mesh::generate_buffers()
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices[0]) * vertices.size(), vertices.data(), GL_STATIC_DRAW);
 
     // position
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
 
     // color
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)(sizeof(float) * vertices.size() / 2));
     glEnableVertexAttribArray(1);
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);

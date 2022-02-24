@@ -44,6 +44,15 @@
     <None Include="shaders\fragmentApp1.glsl">
       <Filter>Source Files\Shaders</Filter>
     </None>
+    <None Include="triangle.3do">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="square.3do">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="tetra.3do">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h">

@@ -7,7 +7,7 @@ int App1::init()
 
     // Set up vertex data (and buffer(s)) and attribute pointers
 
-    mesh = read_mesh("");
+    mesh = read_mesh("square.3do");
     mesh.generate_buffers();
 
     // Square

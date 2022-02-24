@@ -155,6 +155,9 @@
     <None Include="..\README.md" />
     <None Include="shaders\fragmentApp1.glsl" />
     <None Include="shaders\vertexApp1.glsl" />
+    <None Include="square.3do" />
+    <None Include="tetra.3do" />
+    <None Include="triangle.3do" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h" />
