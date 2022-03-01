@@ -26,7 +26,7 @@ int App1::render()
     glClear(GL_DEPTH_BUFFER_BIT); 
 
     glm::mat4 trans = glm::mat4(1.0);
-    trans = glm::rotate(trans, (float)glfwGetTime(), glm::normalize(glm::vec3(0.5, 0.5, 0.0)));
+    trans = glm::rotate(trans, (float)glfwGetTime(), glm::normalize(glm::vec3(0.33, 0.67, 0.0)));
 
     if (key_state(GLFW_KEY_W))
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
