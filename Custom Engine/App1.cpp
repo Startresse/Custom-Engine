@@ -7,8 +7,10 @@ int App1::init()
 
     // Set up vertex data (and buffer(s)) and attribute pointers
 
-    mesh = read_mesh("tetra.3do");
-    mesh.generate_buffers();
+    //mesh = old_read_mesh("tetra.3do");
+    //mesh.generate_buffers();
+
+    mesh = read_mesh("");
 
     // Square
 
@@ -37,7 +39,7 @@ int App1::render()
 
     glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "transform"), 1, GL_FALSE, glm::value_ptr(trans));
 
-    mesh.draw();
+    mesh.draw(shaderProgram);
 
     // Display calculated framebuffer (back to front) and prepares displayed framebuffer to be drawn (front to back)
     glfwSwapBuffers(window);

@@ -10,5 +10,5 @@ uniform mat4 transform;
 void main()
 {
     gl_Position = transform * vec4(position, 1.0);
-    vertexColor = color;
+    vertexColor = vec3(0.7, 0.7, 0.7);
 }
