@@ -3,10 +3,8 @@
 #include "App.h"
 #include "App1.h"
 
-typedef unsigned int uint;
-
 // Window dimensions
-typedef std::pair<uint, uint> resolution_t;
+typedef std::pair<unsigned int, unsigned int> resolution_t;
 const std::vector<resolution_t> standard_resolutions =
 {
     {640, 480},
@@ -22,7 +20,7 @@ const std::vector<resolution_t> standard_resolutions =
 
 int main()
 {
-    uint resolution_type = 3;
+    unsigned int resolution_type = 3;
     resolution_t resolution = standard_resolutions[resolution_type];
 
     App1 app(resolution.first, resolution.second);

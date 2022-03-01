@@ -7,8 +7,6 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-#include "Typedefs.h"
-
 typedef GLFWwindow* Window;
 
 /// <summary>
@@ -19,9 +17,9 @@ class App
 {
 public:
     App() : App(640, 480) {}
-    App(uint window_width, uint window_height) : App(window_width, window_height, 4, 6) {}
+    App(unsigned int window_width, unsigned int window_height) : App(window_width, window_height, 4, 6) {}
 
-    App(uint window_width, uint window_height, int major_gl_version, int minor_gl_version) :
+    App(unsigned int window_width, unsigned int window_height, int major_gl_version, int minor_gl_version) :
         window(nullptr)
     {
         window = create_window(window_width, window_height, major_gl_version, minor_gl_version);

@@ -7,8 +7,6 @@
 #include <iostream>
 #include <vector>
 
-#include "Typedefs.h"
-
 class test_mesh
 {
 public:
@@ -21,14 +19,14 @@ public:
 
     void draw();
 
-    uint VAO, VBO, EBO;
+    unsigned int VAO, VBO, EBO;
 
     size_t nb_vertices() { return indices.size(); }
     size_t nb_indices() { return indices.size(); }
     size_t nb_triangles() { return indices.size() / 3; }
 
     std::vector<float> vertices;
-    std::vector<uint> indices;
+    std::vector<unsigned int> indices;
 
 };
 
