@@ -3,7 +3,7 @@
 #include <sstream>
 #include <fstream>
 
-Mesh::~Mesh()
+test_mesh::~test_mesh()
 {
     if (VAO)
         glDeleteVertexArrays(1, &VAO);
@@ -13,9 +13,9 @@ Mesh::~Mesh()
         glDeleteBuffers(1, &EBO);
 }
 
-Mesh read_mesh(std::string filepath)
+test_mesh read_mesh(std::string filepath)
 {
-    Mesh mesh;
+    test_mesh mesh;
 
     std::ifstream file;
 
@@ -88,7 +88,7 @@ Mesh read_mesh(std::string filepath)
     return mesh;
 }
 
-int Mesh::generate_buffers()
+int test_mesh::generate_buffers()
 {
     glGenBuffers(1, &EBO);
     glGenBuffers(1, &VBO);
@@ -118,7 +118,7 @@ int Mesh::generate_buffers()
     return 0;
 }
 
-void Mesh::draw()
+void test_mesh::draw()
 {
     glBindVertexArray(VAO);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);

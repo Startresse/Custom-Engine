@@ -9,13 +9,13 @@
 
 #include "Typedefs.h"
 
-class Mesh
+class test_mesh
 {
 public:
 
-    Mesh() : VAO(0), VBO(0), EBO(0) {};
+    test_mesh() : VAO(0), VBO(0), EBO(0) {};
 
-    ~Mesh();
+    ~test_mesh();
 
     int generate_buffers();
 
@@ -32,4 +32,4 @@ public:
 
 };
 
-Mesh read_mesh(std::string filepath);
+test_mesh read_mesh(std::string filepath);

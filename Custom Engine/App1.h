@@ -23,7 +23,7 @@ public:
 private:
     GLuint shaderProgram;
 
-    Mesh mesh;
+    test_mesh mesh;
 
 };
 
