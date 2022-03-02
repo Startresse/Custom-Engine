@@ -95,5 +95,90 @@ Mesh read_mesh(std::string filename)
     };
     mesh.indices = { 0, 1, 2, 0, 2, 3 };
 
+    std::ifstream file;
+    file.open(filename);
+
+    if (!file.is_open()) {
+        std::cout << "Error : Couldn't open Mesh file" << std::endl;
+        return Mesh();
+    }
+
+    std::vector<glm::vec3> positions_tmp;
+    std::vector<glm::vec3> normals_tmp;
+    std::vector<glm::vec2> texcoords_tmp;
+
+    std::string line;
+    while (getline(file, line))
+    {
+        // remove starting spaces
+        size_t start = line.find_first_not_of(" \n\r\t\f\v");
+        if (start == std::string::npos)
+            line = "";
+        else if (start != 0)
+            line = line.substr(start);
+
+        // ignore empty lines and commented lines
+        if (line.empty() || line[0] == '#')
+        {
+            if (line.empty())
+                std::cout << "EMPTY LINE" << std::endl;
+            else
+                std::cout << "COMMENTED : " << line << std::endl;
+            continue;
+        }
+
+        std::cout << line << std::endl;
+
+        std::stringstream ss(line);
+        std::string word;
+
+        if (line[0] == 'v')
+        {
+            float x, y, z;
+            if (line[1] == ' ')
+            {
+                if(sscanf_s(line.c_str(), "v %f %f %f", &x, &y, &z) != 3)
+                    break;
+                positions_tmp.emplace_back(x, y, z);
+            }
+            if (line[1] == 'n')
+            {
+                if(sscanf_s(line.c_str(), "vn %f %f %f", &x, &y, &z) != 3)
+                    break;
+                normals_tmp.emplace_back(x, y, z);
+            }
+            if (line[1] == 't')
+            {
+                if(sscanf_s(line.c_str(), "vt %f %f", &x, &y) != 2)
+                    break;
+                texcoords_tmp.emplace_back(x, y);
+            }
+        }
+        else if (line[0] == 'f')
+        {
+
+        }
+
+    }
+
+    // happens when quit reading loop from sscanf fail
+    if (!file.eof())
+        std::cout << "[error] loading mesh " << filename << "..." << line << "\n" << std::endl;
+
+    for (auto x : positions_tmp)
+        std::cout << "(" << x.x << ", " << x.y << ", " << x.z << ")" << std::endl;
+    std::cout << std::endl;
+    for (auto x : normals_tmp)
+        std::cout << "(" << x.x << ", " << x.y << ", " << x.z << ")" << std::endl;
+    std::cout << std::endl;
+    for (auto x : texcoords_tmp)
+        std::cout << "(" << x.x << ", " << x.y << ")" << std::endl;
+    std::cout << std::endl;
+    mesh.positions = positions_tmp;
+
+    file.close();
+
+    exit(0);
+
     return mesh;
 }

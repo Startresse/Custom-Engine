@@ -10,7 +10,7 @@ int App1::init()
     //mesh = old_read_mesh("tetra.3do");
     //mesh.generate_buffers();
 
-    mesh = read_mesh("");
+    mesh = read_mesh("cube.obj");
 
     // Square
 
