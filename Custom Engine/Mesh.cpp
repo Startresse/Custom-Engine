@@ -109,14 +109,6 @@ Mesh read_mesh(std::string filename)
 {
     Mesh mesh;
 
-    //mesh.positions = {
-    //    glm::vec3(0.5f,  0.5f, 0.0f),
-    //    glm::vec3(-0.5f,  0.5f, 0.0f),
-    //    glm::vec3(-0.5f, -0.5f, 0.0f),
-    //    glm::vec3(0.5f, -0.5f, 0.0f),
-    //};
-    //mesh.indices = { 0, 1, 2, 0, 2, 3 };
-
     std::ifstream file;
     file.open(filename);
 
@@ -136,19 +128,13 @@ Mesh read_mesh(std::string filename)
         std::string tag;
 
         // istream& operator>> skips whitespaces unless std::skipws is disabled
+        // ignore empty lines
         if (!(ss >> tag))
-        {
-            std::cout << "EMPTY LINE" << std::endl;
             continue;
-        }
 
+        // ignore comments
         if (tag[0] == '#')
-        {
-            std::cout << "COMMENTED : " << line << std::endl;
             continue;
-        }
-
-        std::cout << line << std::endl;
 
         float x, y, z;
         if (tag == "v")
@@ -171,39 +157,29 @@ Mesh read_mesh(std::string filename)
         }
         else if (tag == "f")
         {
-            std::vector<unsigned int> idp;
-            std::vector<unsigned int> idt;
-            std::vector<unsigned int> idn;
             for (int i = 0; i < 3; ++i)
             {
-                idp.push_back(0);
-                idt.push_back(0);
-                idn.push_back(0);
+                unsigned int idp(0), idt(0), idn(0);
 
-                // save current stringstream position
-                auto state = ss.rdstate() && ~std::ios_base::failbit;
+                // reset stringstream after each read so that it keeps current position when fail
                 auto pos = ss.tellg();
-
+                auto state = ss.rdstate() && ~std::ios_base::failbit;
                 auto reset = [state, pos](std::stringstream& ss)
                 { ss.clear(state); ss.seekg(pos); return !ss.fail(); };
 
-                if (reset(ss) && ss >> idp.back() >> "//" >> idn.back())
-                    continue;
-                else if (reset(ss) && ss >> idp.back() >> "/" >> idt.back() >> "/" >> idn.back())
-                    continue;
-                else if (reset(ss) && ss >> idp.back() >> "/" >> idt.back())
-                    continue;
-                else if (reset(ss) && ss >> idp.back() >> "/" >> idt.back())
-                    continue;
-                else
-                    break;
-            }
-            for (int i = 0 ; i < 3; ++i)
-                std::cout << idp[i] << ", " << idt[i] << ", " << idn[i] << std::endl;
-        }
-        std::cout << std::endl;
+                // will try to match either i//i or i/i/i or i/i or i (all .obj "f" configurations)
+                if (reset(ss) && ss >> idp >> "//" >> idn) {}
+                else if (reset(ss) && ss >> idp >> "/" >> idt >> "/" >> idn) {}
+                else if (reset(ss) && ss >> idp >> "/" >> idt) {}
+                else if (reset(ss) && ss >> idp) {}
 
+                // do stuff with indexes
+                // ...
+                mesh.indices.push_back(idp -1);
+            }
+        }
     }
+    mesh.positions = positions_tmp;
 
     // happens when quit reading loop from sscanf fail
     if (!file.eof())
@@ -223,8 +199,6 @@ Mesh read_mesh(std::string filename)
 #endif
 
     file.close();
-
-    exit(0);
 
     return mesh;
 }
