@@ -23,7 +23,8 @@ int main()
     unsigned int resolution_type = 3;
     resolution_t resolution = standard_resolutions[resolution_type];
 
-    App1 app(resolution.first, resolution.second);
+    //App1 app(resolution.first, resolution.second);
+    App1 app(500, 500);
     app.run();
 
     return 0;
