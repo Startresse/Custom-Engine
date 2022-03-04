@@ -44,6 +44,7 @@ unsigned int Mesh::create_buffers()
 
     size_t buffer_size;
     buffer_size = sizeof(glm::vec3) * positions.size();
+    buffer_size += sizeof(glm::vec3) * normals.size();
     // TODO update depending on normals, etc...
 
     glGenBuffers(1, &buffer);
@@ -57,11 +58,15 @@ unsigned int Mesh::create_buffers()
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (const void*)offset);
     glEnableVertexAttribArray(0);
 
-    //offset += size;
-    //size = normals.size();
-    //glBufferSubData(GL_ARRAY_BUFFER, offset, size, normals.data());
-    //glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, (const void *) offset);
-    //glEnableVertexAttribArray(1);
+    offset += size;
+    size = sizeof(glm::vec3) * normals.size();
+    glBufferSubData(GL_ARRAY_BUFFER, offset, size, normals.data());
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, (const void *) offset);
+    glEnableVertexAttribArray(1);
+
+    offset += size;
+
+    assert(offset == buffer_size);
 
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
@@ -175,11 +180,19 @@ Mesh read_mesh(std::string filename)
 
                 // do stuff with indexes
                 // ...
-                mesh.indices.push_back(idp -1);
+                //mesh.indices.push_back(idp - 1);
+
+                // TODO do better? 
+                mesh.positions.push_back(positions_tmp[idp - 1]);
+                if (idt != 0)
+                    mesh.texcoords.push_back(texcoords_tmp[idt - 1]);
+                if (idn != 0)
+                    mesh.normals.push_back(normals_tmp[idn - 1]);
+                mesh.indices.push_back(mesh.positions.size() - 1);
             }
         }
     }
-    mesh.positions = positions_tmp;
+    //mesh.positions = positions_tmp;
 
     // happens when quit reading loop from sscanf fail
     if (!file.eof())
