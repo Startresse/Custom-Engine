@@ -22,25 +22,39 @@ int App1::render()
     // Check if any events have been activiated (key pressed, mouse moved etc.) and call corresponding response functions
     glfwPollEvents();
 
-    // Render
-    glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
-    glClear(GL_DEPTH_BUFFER_BIT); 
-
-    glm::mat4 trans = glm::mat4(1.0);
-    //trans = glm::translate(trans, glm::vec3(-0.5, -0.5, -2));
-    trans = glm::rotate(trans, (float)glfwGetTime(), glm::normalize(glm::vec3(0.0, 1.0, 0.0)));
-    //trans = glm::rotate(trans, 45.0f, glm::normalize(glm::vec3(0.5, 0.5, 0.0)));
-    //trans = glm::rotate(trans, (float)glfwGetTime(), glm::normalize(glm::vec3(0.0, 1.0, 0.0)));
+    // TODO move
+    glEnable(GL_DEPTH_TEST);  
 
     if (key_state(GLFW_KEY_W))
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     else
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
+    // Render
+    glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    glm::vec3 camera_pos = glm::vec3(0.0f, 0.0f, 3.0f);
+    glm::vec3 camera_target = glm::vec3(0.0f, 0.0f, 0.0f);
+    glm::vec3 camera_dir = glm::normalize(camera_pos - camera_target);
+    glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
+    glm::vec3 camera_right = glm::normalize(glm::cross(up, camera_dir));
+    glm::vec3 camera_up = glm::cross(camera_dir, camera_right);
+
+    glm::mat4 view;
+    view = glm::lookAt(camera_pos, camera_target, camera_up);
+
+    glm::mat4 trans = glm::mat4(1.0);
+    trans = glm::rotate(trans, (float)glfwGetTime(), glm::normalize(glm::vec3(0.0, 1.0, 0.0)));
+    trans = glm::translate(trans, glm::vec3(-0.5, -0.5, 0.0f));
+    trans = glm::rotate(trans, 45.0f, glm::normalize(glm::vec3(0.5, 0.5, 0.0)));
+
+    glm::mat4 proj = glm::perspective(glm::radians(45.0f), static_cast<float>(window_width()) / window_height(), 0.1f, 100.0f);
     glUseProgram(shaderProgram);
 
-    glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "transform"), 1, GL_FALSE, glm::value_ptr(trans));
+    glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "model"), 1, GL_FALSE, glm::value_ptr(trans));
+    glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "view"), 1, GL_FALSE, glm::value_ptr(view));
+    glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "projection"), 1, GL_FALSE, glm::value_ptr(proj));
 
     mesh.draw(shaderProgram);
 
