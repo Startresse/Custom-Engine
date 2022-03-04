@@ -33,3 +33,4 @@ private:
 
 Mesh read_mesh(std::string filename);
 
+std::istream& operator>>(std::istream& is, char const* s);
