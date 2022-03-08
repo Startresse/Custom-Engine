@@ -23,9 +23,12 @@ public:
     int quit();
 
 private:
-    GLuint shaderProgram;
+    GLuint shader_program;
 
-    Mesh mesh;
+    std::vector<Mesh> meshes;
+
+    GLuint axes_program;
+    GLuint axes_vao, axes_vbo;
 
 };
 

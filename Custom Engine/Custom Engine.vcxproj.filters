@@ -47,6 +47,12 @@
     <None Include="shaders\fragmentApp1.glsl">
       <Filter>Source Files\Shaders</Filter>
     </None>
+    <None Include="vertexAxes.glsl">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="fragmentAxes.glsl">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h">
