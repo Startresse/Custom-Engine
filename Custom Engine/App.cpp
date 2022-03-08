@@ -70,9 +70,19 @@ int App::run()
 
     glViewport(0, 0, window_width(), window_height());
 
+    glEnable(GL_DEPTH_TEST);
+
     while (!glfwWindowShouldClose(window))
     {
+        // Check if any events have been activiated (key pressed, mouse moved etc.) and call corresponding response functions
+        glfwPollEvents();
+
+        input();
+
         render();
+
+        // Display calculated framebuffer (back to front) and prepares displayed framebuffer to be drawn (front to back)
+        glfwSwapBuffers(window);
     }
 
     if (quit() < 0)

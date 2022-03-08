@@ -10,20 +10,20 @@ int App1::init()
     return 0;
 }
 
-int App1::render()
+int App1::input()
 {
-    // Check if any events have been activiated (key pressed, mouse moved etc.) and call corresponding response functions
-    glfwPollEvents();
 
-    // TODO move
-    glEnable(GL_DEPTH_TEST);  
-
+    // Wireframe display
     if (key_state(GLFW_KEY_W))
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     else
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
-    // Render
+    return 0;
+}
+
+int App1::render()
+{
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -51,14 +51,10 @@ int App1::render()
 
     mesh.draw(shaderProgram);
 
-    // Display calculated framebuffer (back to front) and prepares displayed framebuffer to be drawn (front to back)
-    glfwSwapBuffers(window);
-
     return 0;
 }
 
 int App1::quit()
 {
-
     return 0;
 }

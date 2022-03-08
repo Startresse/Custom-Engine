@@ -16,6 +16,8 @@ class App1 : public App
 public:
     using App::App;
 
+    int input();
+
     int init();
     int render();
     int quit();
