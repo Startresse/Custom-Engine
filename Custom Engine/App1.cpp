@@ -5,14 +5,7 @@ int App1::init()
     Shader shader("shaders/vertexApp1.glsl", "shaders/fragmentApp1.glsl");
     shaderProgram = shader.ID;
 
-    // Set up vertex data (and buffer(s)) and attribute pointers
-
-    //mesh = old_read_mesh("tetra.3do");
-    //mesh.generate_buffers();
-
     mesh = read_mesh("data/cube.obj");
-
-    // Square
 
     return 0;
 }
@@ -55,9 +48,6 @@ int App1::render()
     glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "model"), 1, GL_FALSE, glm::value_ptr(trans));
     glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "view"), 1, GL_FALSE, glm::value_ptr(view));
     glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "projection"), 1, GL_FALSE, glm::value_ptr(proj));
-
-    //glm::vec3 light_pos = camera_pos;
-    //glUniformMatrix3fv(glGetUniformLocation(shaderProgram, "light_pos"), 1, GL_FALSE, glm::value_ptr(light_pos));
 
     mesh.draw(shaderProgram);
 
