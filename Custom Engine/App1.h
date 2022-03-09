@@ -8,6 +8,7 @@
 #include "Shader.h"
 #include "Mesh.h"
 #include "Camera.h"
+#include "Axes.h"
 
 /// <summary>
 /// Exemple from https://learnopengl.com/ to check for tests and dev.
@@ -24,11 +25,10 @@ public:
     int quit();
 
 private:
-    GLuint shader_program;
+    Shader program;
 
     std::vector<Mesh> meshes;
 
-    GLuint axes_program;
-    GLuint axes_vao, axes_vbo;
+    Axes default_axes;
 };
 

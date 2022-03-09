@@ -2,34 +2,9 @@
 
 int App1::init()
 {
-    // Axes
-    Shader axes_shader("shaders/vertexAxes.glsl", "shaders/fragmentAxes.glsl");
-    axes_program = axes_shader.ID;
-    float axes_vertices[] =
-    {
-        0, 0, 0,
-        1, 0, 0,
-        0, 0, 0,
-        0, 1, 0,
-        0, 0, 0,
-        0, 0, 1,
-    };
-    glGenVertexArrays(1, &axes_vao);
-    glGenBuffers(1, &axes_vbo);
-    glBindVertexArray(axes_vao);
-
-    glBindBuffer(GL_ARRAY_BUFFER, axes_vbo);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(axes_vertices), axes_vertices, GL_STATIC_DRAW);
-
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
-
-    glBindBuffer(GL_ARRAY_BUFFER, 0); 
-    glBindVertexArray(0); 
 
     // Meshes
-    Shader shader("shaders/vertexApp1.glsl", "shaders/fragmentApp1.glsl");
-    shader_program = shader.ID;
+    program = Shader("shaders/vertexApp1.glsl", "shaders/fragmentApp1.glsl");
 
     meshes.push_back(read_mesh("data/cube.obj"));
     //meshes.push_back(read_mesh("data/cornell.obj"));
@@ -68,21 +43,16 @@ int App1::render()
     //trans = glm::translate(trans, glm::vec3(-0.5, -0.5, 0.0f));
     //trans = glm::rotate(trans, 45.0f, glm::normalize(glm::vec3(0.5, 0.5, 0.0)));
 
-    // axes
-    glUseProgram(axes_program);
-    glUniformMatrix4fv(glGetUniformLocation(axes_program, "MVP"), 1, GL_FALSE, glm::value_ptr(mvp));
-    glBindVertexArray(axes_vao);
-    glDrawArrays(GL_LINES, 0, 6);
+    default_axes.draw(mvp);
 
     // Models
-    glUseProgram(shader_program);
-
-    glUniformMatrix4fv(glGetUniformLocation(shader_program, "model"), 1, GL_FALSE, glm::value_ptr(trans));
-    glUniformMatrix4fv(glGetUniformLocation(shader_program, "view"), 1, GL_FALSE, glm::value_ptr(view));
-    glUniformMatrix4fv(glGetUniformLocation(shader_program, "projection"), 1, GL_FALSE, glm::value_ptr(proj));
+    program.use();
+    program.setMat4("model", trans);
+    program.setMat4("view", view);
+    program.setMat4("projection", proj);
 
     for (auto& mesh : meshes)
-        mesh.draw(shader_program);
+        mesh.draw(program.ID);
 
     return 0;
 }
