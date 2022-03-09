@@ -7,6 +7,12 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
+#include "Camera.h"
+
 typedef GLFWwindow* Window;
 
 /// <summary>
@@ -28,6 +34,13 @@ public:
     ~App();
 
     int run();
+
+
+    // TODO protected ?
+    Camera camera;
+
+    int window_width();
+    int window_height();
 
 protected:
     Window window;
@@ -59,9 +72,6 @@ protected:
     /// </summary>
     /// <returns>>=0 if it worked, some other integer otherwise.</returns>
     virtual int quit() = 0;
-
-    int window_width();
-    int window_height();
 
     Window create_window(int width, int height, int major, int minor);
 

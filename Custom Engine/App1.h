@@ -7,6 +7,7 @@
 #include "App.h"
 #include "Shader.h"
 #include "Mesh.h"
+#include "Camera.h"
 
 /// <summary>
 /// Exemple from https://learnopengl.com/ to check for tests and dev.
@@ -29,6 +30,5 @@ private:
 
     GLuint axes_program;
     GLuint axes_vao, axes_vbo;
-
 };
 

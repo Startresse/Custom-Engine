@@ -1,9 +1,16 @@
 #include "App.h"
 
 // Warning : called on every frame but displayed only on realese...
-void framebuffer_size_callback(GLFWwindow* window, int width, int height)
+void update_framebuffer(GLFWwindow* window, int width, int height)
 {
     glViewport(0, 0, width, height);
+    App* app = (App*) glfwGetWindowUserPointer(window);
+
+    constexpr float fov = glm::radians(45.0f);
+    float aspect_ratio = static_cast<float>(app->window_width()) / static_cast<float>(app->window_height());
+    float near_plane = 0.1f;
+    float far_plane = 100.0f;
+    app->camera.set_projection(glm::perspective(fov, aspect_ratio, near_plane, far_plane));
 }
 
 const std::string window_name = "Main Window";
@@ -40,8 +47,8 @@ Window App::create_window(int w, int h, int major, int minor)
     }
 
     // Set window size change callback
-    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-
+    glfwSetFramebufferSizeCallback(window, update_framebuffer);
+    glfwSetWindowUserPointer(window, (void*)this);
 
     return window;
 }
@@ -68,7 +75,8 @@ int App::run()
     if (init() < 0)
         return -1;
 
-    glViewport(0, 0, window_width(), window_height());
+    // Use update framebuffer function to set camera proj and glViewport
+    update_framebuffer(window, window_width(), window_height());
 
     glEnable(GL_DEPTH_TEST);
 
