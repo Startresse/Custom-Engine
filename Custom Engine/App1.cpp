@@ -30,10 +30,10 @@ int App1::input()
 
 int App1::render()
 {
-    glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+    glClearColor(0.04f, 0.04f, 0.04f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    camera.set_position(glm::vec3(glm::rotate(glm::mat4(1.0), (float)glfwGetTime(), glm::vec3(0, 1, 0)) * glm::vec4(0.0f, 2.0f, 3.0f, 1.0f)));
+    camera.set_position(glm::vec3(glm::rotate(glm::mat4(1.0), (float)glfwGetTime(), glm::vec3(0, 1, 0)) * glm::vec4(0.0f, 1.0f, 3.0f, 1.0f)));
     glm::mat4 view = camera.view();
     glm::mat4 proj = camera.projection();
     glm::mat4 mvp = proj * view * glm::mat4(1.0);
@@ -45,6 +45,7 @@ int App1::render()
 
     default_axes.draw(mvp);
 
+    return 1;
     // Models
     program.use();
     program.setMat4("model", trans);

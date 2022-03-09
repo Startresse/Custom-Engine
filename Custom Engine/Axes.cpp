@@ -9,7 +9,16 @@ void Axes::create_buffers()
     glBindVertexArray(vao);
 
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(axes[0]) * axes.size(), axes.data(), GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(Line) * (axes.size() + grid.size()), nullptr, GL_STATIC_DRAW);
+
+    // put in update buffers
+    GLsizei offset = 0;
+    GLsizei sub_buffer_size = static_cast<GLsizei>(sizeof(Line) * axes.size());
+    glBufferSubData(GL_ARRAY_BUFFER, offset, sub_buffer_size, axes.data());
+    
+    offset += sub_buffer_size;
+    sub_buffer_size = static_cast<GLsizei>(sizeof(Line) * grid.size());
+    glBufferSubData(GL_ARRAY_BUFFER, offset, sub_buffer_size, grid.data());
 
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
@@ -29,9 +38,32 @@ void Axes::draw(const glm::mat4 &mvp)
     program.use();
 
     program.setMat4("MVP", mvp);
-    glDrawArrays(GL_LINES, 0, 2 * static_cast<GLsizei>(axes.size()));
+    GLsizei offset = 0;
+    const GLsizei axes_size = 2 * static_cast<GLsizei>(axes.size());
+    const GLsizei grid_size = 2 * static_cast<GLsizei>(grid.size());
+    if (display_axes)
+        glDrawArrays(GL_LINES, offset, axes_size);
+    offset += axes_size;
+    if (display_grid)
+        glDrawArrays(GL_LINES, offset, grid_size);
+
 
     glUseProgram(0);
     glBindVertexArray(0);
+}
+
+void Axes::setup_grid()
+{
+    grid.clear();
+    for (int i = -grid_size; i <= grid_size; ++i)
+    {
+        // along X lines
+        grid.push_back(Line({-grid_size, 0, i}, {grid_size, 0, i}));
+
+        // along Z lines
+        grid.push_back(Line({i, 0, -grid_size}, {i, 0, grid_size}));
+    }
+
+    // TODO reupdate buffer
 }
 
