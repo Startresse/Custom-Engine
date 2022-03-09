@@ -47,10 +47,10 @@
     <None Include="shaders\fragmentApp1.glsl">
       <Filter>Source Files\Shaders</Filter>
     </None>
-    <None Include="vertexAxes.glsl">
+    <None Include="shaders\fragmentAxes.glsl">
       <Filter>Source Files\Shaders</Filter>
     </None>
-    <None Include="fragmentAxes.glsl">
+    <None Include="shaders\vertexAxes.glsl">
       <Filter>Source Files\Shaders</Filter>
     </None>
   </ItemGroup>
