@@ -149,6 +149,7 @@
     <ClCompile Include="App1.cpp" />
     <ClCompile Include="Axes.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Color.cpp" />
     <ClCompile Include="Custom Engine.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="Shader.cpp" />
@@ -165,6 +166,7 @@
     <ClInclude Include="App1.h" />
     <ClInclude Include="Axes.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="Color.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Shader.h" />
   </ItemGroup>

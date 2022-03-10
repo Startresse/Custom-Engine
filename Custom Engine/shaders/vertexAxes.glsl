@@ -1,11 +1,11 @@
 #version 330 core
 
 layout (location = 0) in vec3 position;
-layout (location = 1) in vec3 c;
+layout (location = 1) in vec4 c;
 
 uniform mat4 MVP;
 
-out vec3 color;
+out vec4 color;
 
 void main()
 {

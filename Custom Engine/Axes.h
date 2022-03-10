@@ -11,22 +11,27 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include "Shader.h"
+#include "Color.h"
+
+constexpr int grid_size = 10;
+constexpr float grid_line_size = 2.0f;
+constexpr float default_line_size = 1.0f;
 
 struct Point
 {
     Point() : Point(glm::vec3(0.0f, 0.0f, 0.0f)) {}
-    Point(glm::vec3 p) : Point(p, glm::vec3(1.0f, 1.0f, 1.0f)) {}
-    Point(glm::vec3 p, glm::vec3 c) : coord(p), color(c) {}
+    Point(glm::vec3 p) : Point(p, white()) {}
+    Point(glm::vec3 p, Color c) : coord(p), color(c) {}
 
     glm::vec3 coord;
-    glm::vec3 color;
+    Color color;
 };
 
 struct Line
 {
     Line() : Line({ 0, 0, 0 }, { 0, 0, 0 }) {}
-    Line(glm::vec3 start, glm::vec3 end) : Line(start, end, glm::vec3(1, 1, 1)) {}
-    Line(glm::vec3 start, glm::vec3 end, glm::vec3 color) : a(start, color), b(end, color) {}
+    Line(glm::vec3 start, glm::vec3 end) : Line(start, end, Color(1, 1, 1)) {}
+    Line(glm::vec3 start, glm::vec3 end, Color color) : a(start, color), b(end, color) {}
 
     Point a;
     Point b;
@@ -37,24 +42,27 @@ class Axes
 public:
     Axes() : vao(0), vbo(0) { setup_grid(); };
 
-    void draw(const glm::mat4 &mvp);
+    void draw(const glm::mat4& mvp);
 
-    // will only work if set before first draw call
-    void set_grid_size(int size) { grid_size = size; setup_grid(); }
+    void toggle_axes_display() { display_axes = !display_axes; }
+    void toggle_grid_display() { display_grid = !display_grid; }
 
 private:
+
     bool display_axes = true;
     bool display_grid = true;
 
     void create_buffers();
     void setup_grid();
 
+    // TODO put axes in corner instead
     const std::vector<Line> axes =
     {
-        Line({0, 0, 0}, {0, 1, 0}, {0.215, 0.352, 0.513}),
+        Line({0, 0, 0}, {1, 0, 0}, grid_red()),
+        Line({0, 0, 0}, {0, 1, 0}, grid_blue()),
+        Line({0, 0, 0}, {0, 0, 1}, grid_green()),
     };
     std::vector<Line> grid;
-    int grid_size = 10;
 
     unsigned int vao, vbo;
     Shader program;

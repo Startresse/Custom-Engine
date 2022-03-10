@@ -15,21 +15,21 @@ void Axes::create_buffers()
     GLsizei offset = 0;
     GLsizei sub_buffer_size = static_cast<GLsizei>(sizeof(Line) * axes.size());
     glBufferSubData(GL_ARRAY_BUFFER, offset, sub_buffer_size, axes.data());
-    
+
     offset += sub_buffer_size;
     sub_buffer_size = static_cast<GLsizei>(sizeof(Line) * grid.size());
     glBufferSubData(GL_ARRAY_BUFFER, offset, sub_buffer_size, grid.data());
 
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Point), (void*)0);
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Point), (void*) sizeof(glm::vec3));
+    glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(Point), (void*)sizeof(glm::vec3));
     glEnableVertexAttribArray(1);
 
-    glBindBuffer(GL_ARRAY_BUFFER, 0); 
-    glBindVertexArray(0); 
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindVertexArray(0);
 }
 
-void Axes::draw(const glm::mat4 &mvp)
+void Axes::draw(const glm::mat4& mvp)
 {
     if (!vao)
         create_buffers();
@@ -38,6 +38,8 @@ void Axes::draw(const glm::mat4 &mvp)
 
     glBindVertexArray(vao);
     program.use();
+
+    glLineWidth(grid_line_size);
 
     program.setMat4("MVP", mvp);
     GLsizei offset = 0;
@@ -49,6 +51,7 @@ void Axes::draw(const glm::mat4 &mvp)
     if (display_grid)
         glDrawArrays(GL_LINES, offset, grid_size);
 
+    glLineWidth(default_line_size);
 
     glUseProgram(0);
     glBindVertexArray(0);
@@ -58,17 +61,16 @@ void Axes::setup_grid()
 {
     grid.clear();
 
-    const glm::vec3 default_line_color = glm::vec3(0.294f, 0.294f, 0.294f);
-    glm::vec3 color;
+    Color color;
     for (int i = -grid_size; i <= grid_size; ++i)
     {
         // along X lines
-        color = i ? default_line_color : glm::vec3(0.396, 0.552, 0.145);
-        grid.push_back(Line({-grid_size, 0, i}, {grid_size, 0, i}, color));
+        color = i ? grid_grey() : grid_red();
+        grid.push_back(Line({ -grid_size, 0, i }, { grid_size, 0, i }, color));
 
         // along Z lines
-        color = i ? default_line_color : glm::vec3(0.619, 0.235, 0.290);
-        grid.push_back(Line({i, 0, -grid_size}, {i, 0, grid_size}, color));
+        color = i ? grid_grey() : grid_green();
+        grid.push_back(Line({ i, 0, -grid_size }, { i, 0, grid_size }, color));
     }
 
     // TODO reupdate buffer
