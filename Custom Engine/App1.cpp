@@ -1,5 +1,29 @@
 #include "App1.h"
 
+void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+{
+    App1* app = (App1*) glfwGetWindowUserPointer(window);
+
+    // G + 1 : toggle axes
+    if (key == GLFW_KEY_1 && action == GLFW_PRESS && glfwGetKey(window, GLFW_KEY_G))
+        app->default_axes.toggle_axes_display();
+
+    // G + 2 : toggle grid
+    if (key == GLFW_KEY_2 && action == GLFW_PRESS && glfwGetKey(window, GLFW_KEY_G))
+        app->default_axes.toggle_grid_display();
+
+    // W : toggle wireframe
+    if (key == GLFW_KEY_W && action == GLFW_PRESS)
+    {
+        GLint polygon_mode;
+        glGetIntegerv(GL_POLYGON_MODE, &polygon_mode);
+        if (polygon_mode == GL_LINE)
+            glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+        else
+            glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    }
+}
+
 int App1::init()
 {
 
@@ -13,17 +37,7 @@ int App1::init()
     camera.set_position(glm::vec3(0.0f, 2.0f, 3.0f));
     camera.set_target(glm::vec3(0.0f, 0.0f, 0.0f));
 
-    return 0;
-}
-
-int App1::input()
-{
-
-    // Wireframe display
-    if (key_state(GLFW_KEY_W))
-        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-    else
-        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    glfwSetKeyCallback(window, key_callback);
 
     return 0;
 }
@@ -44,8 +58,9 @@ int App1::render()
     //trans = glm::rotate(trans, 45.0f, glm::normalize(glm::vec3(0.5, 0.5, 0.0)));
 
     default_axes.draw(mvp);
+    // grid won't display over anything
+    //glClear(GL_DEPTH_BUFFER_BIT);
 
-    return 1;
     // Models
     program.use();
     program.setMat4("model", trans);

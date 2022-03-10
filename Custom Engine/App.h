@@ -48,12 +48,6 @@ protected:
     int height;
 
     /// <summary>
-    /// Handle inputs from user
-    /// </summary>
-    /// <returns>>=0 if it worked, some other integer otherwise.</returns>
-    virtual int input() = 0;
-
-    /// <summary>
     /// Used first and once at the run() function call.
     /// </summary>
     /// <returns>>=0 if it worked, some other integer otherwise.</returns>

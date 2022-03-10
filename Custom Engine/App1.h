@@ -18,17 +18,15 @@ class App1 : public App
 public:
     using App::App;
 
-    int input();
-
     int init();
     int render();
     int quit();
+
+    Axes default_axes;
 
 private:
     Shader program;
 
     std::vector<Mesh> meshes;
-
-    Axes default_axes;
 };
 
