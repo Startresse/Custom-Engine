@@ -20,7 +20,7 @@ constexpr float default_line_size = 1.0f;
 struct Point
 {
     Point() : Point(glm::vec3(0.0f, 0.0f, 0.0f)) {}
-    Point(glm::vec3 p) : Point(p, white()) {}
+    Point(glm::vec3 p) : Point(p, Color::white()) {}
     Point(glm::vec3 p, Color c) : coord(p), color(c) {}
 
     glm::vec3 coord;
@@ -58,9 +58,9 @@ private:
     // TODO put axes in corner instead
     const std::vector<Line> axes =
     {
-        Line({0, 0, 0}, {1, 0, 0}, grid_red()),
-        Line({0, 0, 0}, {0, 1, 0}, grid_blue()),
-        Line({0, 0, 0}, {0, 0, 1}, grid_green()),
+        Line({0, 0, 0}, {1, 0, 0}, Color::grid_red()),
+        Line({0, 0, 0}, {0, 1, 0}, Color::grid_blue()),
+        Line({0, 0, 0}, {0, 0, 1}, Color::grid_green()),
     };
     std::vector<Line> grid;
 

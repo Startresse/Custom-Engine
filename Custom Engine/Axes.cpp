@@ -65,11 +65,11 @@ void Axes::setup_grid()
     for (int i = -grid_size; i <= grid_size; ++i)
     {
         // along X lines
-        color = i ? grid_grey() : grid_red();
+        color = i ? Color::grid_grey() : Color::grid_red();
         grid.push_back(Line({ -grid_size, 0, i }, { grid_size, 0, i }, color));
 
         // along Z lines
-        color = i ? grid_grey() : grid_green();
+        color = i ? Color::grid_grey() : Color::grid_green();
         grid.push_back(Line({ i, 0, -grid_size }, { i, 0, grid_size }, color));
     }
 
