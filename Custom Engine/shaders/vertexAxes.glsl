@@ -1,21 +1,14 @@
 #version 330 core
 
 layout (location = 0) in vec3 position;
+layout (location = 1) in vec3 c;
 
 uniform mat4 MVP;
 
-flat out int line_nb;
+out vec3 color;
 
 void main()
 {
-
-    // determine x, y or z axis
-    if (position.x > 0.0f)
-        line_nb = 0;
-    else if (position.y > 0.0f)
-        line_nb = 1;
-    else
-        line_nb = 2;
-
+    color = c;
     gl_Position = MVP * vec4(position, 1.0);
 }

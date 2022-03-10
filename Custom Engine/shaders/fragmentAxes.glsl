@@ -1,11 +1,10 @@
 #version 330 core
 
-flat in int line_nb;
+in vec3 color;
 
 out vec4 frag_color;
 
 void main()
 {
-    frag_color = 0.3f * vec4(1.0f, 1.0f, 1.0f, 1.0f);
-//    frag_color = 0.8f * vec4(float(line_nb == 0), float(line_nb == 1), float(line_nb == 2), 1.0f);
+    frag_color = vec4(color, 1.0f);
 } 

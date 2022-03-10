@@ -12,13 +12,24 @@
 
 #include "Shader.h"
 
+struct Point
+{
+    Point() : Point(glm::vec3(0.0f, 0.0f, 0.0f)) {}
+    Point(glm::vec3 p) : Point(p, glm::vec3(1.0f, 1.0f, 1.0f)) {}
+    Point(glm::vec3 p, glm::vec3 c) : coord(p), color(c) {}
+
+    glm::vec3 coord;
+    glm::vec3 color;
+};
+
 struct Line
 {
     Line() : Line({ 0, 0, 0 }, { 0, 0, 0 }) {}
-    Line(glm::vec3 start, glm::vec3 end) : a(start), b(end) {}
+    Line(glm::vec3 start, glm::vec3 end) : Line(start, end, glm::vec3(1, 1, 1)) {}
+    Line(glm::vec3 start, glm::vec3 end, glm::vec3 color) : a(start, color), b(end, color) {}
 
-    glm::vec3 a;
-    glm::vec3 b;
+    Point a;
+    Point b;
 };
 
 class Axes
@@ -40,9 +51,7 @@ private:
 
     const std::vector<Line> axes =
     {
-        Line({0, 0, 0}, {1, 0, 0}),
-        Line({0, 0, 0}, {0, 1, 0}),
-        Line({0, 0, 0}, {0, 0, 1}),
+        Line({0, 0, 0}, {0, 1, 0}, {0.215, 0.352, 0.513}),
     };
     std::vector<Line> grid;
     int grid_size = 10;
