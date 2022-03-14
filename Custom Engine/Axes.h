@@ -12,6 +12,7 @@
 
 #include "Shader.h"
 #include "Color.h"
+#include "Direction.h"
 
 constexpr int grid_size = 10;
 constexpr float grid_line_size = 2.0f;
@@ -58,9 +59,9 @@ private:
     // TODO put axes in corner instead
     const std::vector<Line> axes =
     {
-        Line({0, 0, 0}, {1, 0, 0}, Color::grid_red()),
-        Line({0, 0, 0}, {0, 1, 0}, Color::grid_blue()),
-        Line({0, 0, 0}, {0, 0, 1}, Color::grid_green()),
+        Line({0, 0, 0}, Direction::right, Color::grid_red()),
+        Line({0, 0, 0}, Direction::up, Color::grid_blue()),
+        Line({0, 0, 0}, Direction::forward, Color::grid_green()),
     };
     std::vector<Line> grid;
 
