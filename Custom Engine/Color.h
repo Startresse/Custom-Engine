@@ -9,8 +9,8 @@ public:
     Color() : glm::vec4(0, 0, 0, 1) {}
 
     explicit Color(const float value) : glm::vec4(value, value, value, 1.0f) {}
-    explicit Color(const float r_, const float g, const float b, const float a = 1.0f)
-        : glm::vec4(r_, g, b, a) {}
+    explicit Color(const float r, const float g, const float b, const float a = 1.0f)
+        : glm::vec4(r, g, b, a) {}
 
     Color(const Color& color, const float alpha) : glm::vec4(glm::vec3(color), alpha) {}
 
@@ -28,22 +28,24 @@ public:
     float& b() { return z; }
     float& a() { return w; }
 
-    // Default color
-    static Color black();
-    static Color white();
+    // Default colors
+    static const Color black;
+    static const Color white;
 
-    static Color red();
-    static Color green();
-    static Color blue();
+    static const Color red;
+    static const Color green;
+    static const Color blue;
 
-    static Color yellow();
-    static Color pink();
-    static Color cyan();
+    static const Color yellow;
+    static const Color pink;
+    static const Color cyan;
 
     // App specific colors
-    static Color grid_red();
-    static Color grid_green();
-    static Color grid_blue();
-    static Color grid_grey();
+    static const Color grid_red;
+    static const Color grid_green;
+    static const Color grid_blue;
+    static const Color grid_grey;
+
+    static const Color background_grey;
 };
 

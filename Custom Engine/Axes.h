@@ -21,7 +21,7 @@ constexpr float default_line_size = 1.0f;
 struct Point
 {
     Point() : Point(glm::vec3(0.0f, 0.0f, 0.0f)) {}
-    Point(glm::vec3 p) : Point(p, Color::white()) {}
+    Point(glm::vec3 p) : Point(p, Color::white) {}
     Point(glm::vec3 p, Color c) : coord(p), color(c) {}
 
     glm::vec3 coord;
@@ -31,7 +31,7 @@ struct Point
 struct Line
 {
     Line() : Line({ 0, 0, 0 }, { 0, 0, 0 }) {}
-    Line(glm::vec3 start, glm::vec3 end) : Line(start, end, Color(1, 1, 1)) {}
+    Line(glm::vec3 start, glm::vec3 end) : Line(start, end, Color::white) {}
     Line(glm::vec3 start, glm::vec3 end, Color color) : a(start, color), b(end, color) {}
 
     Point a;
@@ -59,9 +59,9 @@ private:
     // TODO put axes in corner instead
     const std::vector<Line> axes =
     {
-        Line({0, 0, 0}, Direction::right, Color::grid_red()),
-        Line({0, 0, 0}, Direction::up, Color::grid_blue()),
-        Line({0, 0, 0}, Direction::forward, Color::grid_green()),
+        Line({0, 0, 0}, Direction::right, Color::grid_red),
+        Line({0, 0, 0}, Direction::up, Color::grid_blue),
+        Line({0, 0, 0}, Direction::forward, Color::grid_green),
     };
     std::vector<Line> grid;
 

@@ -4,8 +4,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-const glm::vec3 WORLD_UP(0.0f, 1.0f, 0.0f);
-    
+#include "Direction.h"
 
 class Camera
 {

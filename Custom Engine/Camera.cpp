@@ -3,7 +3,7 @@
 void Camera::recalculate()
 {
     direction_v = glm::normalize(position_v - target_v);
-    right_v = glm::normalize(glm::cross(WORLD_UP, direction_v));
+    right_v = glm::normalize(glm::cross(Direction::up, direction_v));
     up_v = glm::normalize(glm::cross(direction_v, right_v));
 
     view_mat = glm::lookAt(position_v, target_v, up_v);

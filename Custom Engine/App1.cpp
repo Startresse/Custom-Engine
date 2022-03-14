@@ -44,7 +44,8 @@ int App1::init()
 
 int App1::render()
 {
-    glClearColor(0.212f, 0.212f, 0.212f, 0.1f);
+    Color c = Color::background_grey;
+    glClearColor(c.x, c.y, c.z, c.w);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     camera.set_position(glm::vec3(glm::rotate(glm::mat4(1.0), (float)glfwGetTime(), glm::vec3(0, 1, 0)) * glm::vec4(0.0f, 1.0f, 3.0f, 1.0f)));
