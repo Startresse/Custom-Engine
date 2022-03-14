@@ -14,9 +14,11 @@
 #include "Color.h"
 #include "Direction.h"
 
-constexpr int grid_size = 10;
-constexpr float grid_line_size = 2.0f;
-constexpr float default_line_size = 1.0f;
+namespace Grid
+{
+    constexpr int size = 10;
+    constexpr float line_size = 2.0f;
+}
 
 struct Point
 {

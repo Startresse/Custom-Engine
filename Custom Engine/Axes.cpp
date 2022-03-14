@@ -39,19 +39,20 @@ void Axes::draw(const glm::mat4& mvp)
     glBindVertexArray(vao);
     program.use();
 
-    glLineWidth(grid_line_size);
+    float current_line_width;
+    glGetFloatv(GL_LINE_WIDTH, &current_line_width);
+
+    glLineWidth(Grid::line_size);
 
     program.setMat4("MVP", mvp);
-    GLsizei offset = 0;
     const GLsizei axes_size = 2 * static_cast<GLsizei>(axes.size());
     const GLsizei grid_size = 2 * static_cast<GLsizei>(grid.size());
     if (display_axes)
-        glDrawArrays(GL_LINES, offset, axes_size);
-    offset += axes_size;
+        glDrawArrays(GL_LINES, 0, axes_size);
     if (display_grid)
-        glDrawArrays(GL_LINES, offset, grid_size);
+        glDrawArrays(GL_LINES, axes_size, grid_size);
 
-    glLineWidth(default_line_size);
+    glLineWidth(current_line_width);
 
     glUseProgram(0);
     glBindVertexArray(0);
@@ -62,15 +63,23 @@ void Axes::setup_grid()
     grid.clear();
 
     Color color;
-    for (int i = -grid_size; i <= grid_size; ++i)
+    glm::vec3 a, b;
+    for (int i = -Grid::size; i <= Grid::size; ++i)
     {
-        // along X lines
-        color = i ? Color::grid_grey : Color::grid_red;
-        grid.push_back(Line({ -grid_size, 0, i }, { grid_size, 0, i }, color));
+        float i_f = static_cast<float>(i);
+        float gs = static_cast<float>(Grid::size);
 
-        // along Z lines
+        // along width 
+        color = i ? Color::grid_grey : Color::grid_red;
+        a = i_f * Direction::forward + gs * Direction::left;
+        b = i_f * Direction::forward + gs * Direction::right;
+        grid.push_back(Line(a, b, color));
+
+        // along depth
         color = i ? Color::grid_grey : Color::grid_green;
-        grid.push_back(Line({ i, 0, -grid_size }, { i, 0, grid_size }, color));
+        a = i_f * Direction::right + gs * Direction::back;
+        b = i_f * Direction::right + gs * Direction::forward;
+        grid.push_back(Line(a, b, color));
     }
 
     // TODO reupdate buffer

@@ -6,10 +6,10 @@
 class Color : public glm::vec4
 {
 public:
-    Color() : glm::vec4(0, 0, 0, 1) {}
+    Color() : glm::vec4(0.f, 0.f, 0.f, 1.f) {}
 
-    explicit Color(const float value) : glm::vec4(value, value, value, 1.0f) {}
-    explicit Color(const float r, const float g, const float b, const float a = 1.0f)
+    explicit Color(const float value) : glm::vec4(value, value, value, 1.f) {}
+    explicit Color(const float r, const float g, const float b, const float a = 1.f)
         : glm::vec4(r, g, b, a) {}
 
     Color(const Color& color, const float alpha) : glm::vec4(glm::vec3(color), alpha) {}

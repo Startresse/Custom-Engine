@@ -2,19 +2,19 @@
 
 float Color::power() const
 {
-    return (x + y + z) / 3.0f;
+    return (x + y + z) / 3.f;
 }
 
-const Color Color::black = Color(0.0f, 0.0f, 0.0f);
-const Color Color::white = Color(1.0f, 1.0f, 1.0f);
+const Color Color::black = Color(0.f, 0.f, 0.f);
+const Color Color::white = Color(1.f, 1.f, 1.f);
 
-const Color Color::red = Color(1.0f, 0.0f, 0.0f);
-const Color Color::green = Color(0.0f, 1.0f, 0.0f);
-const Color Color::blue = Color(0.0f, 0.0f, 1.0f);
+const Color Color::red = Color(1.f, 0.f, 0.f);
+const Color Color::green = Color(0.f, 1.f, 0.f);
+const Color Color::blue = Color(0.f, 0.f, 1.f);
 
-const Color Color::yellow = Color(1.0f, 1.0f, 0.0f);
-const Color Color::pink = Color(1.0f, 0.0f, 1.0f);
-const Color Color::cyan = Color(0.0f, 1.0f, 1.0f);
+const Color Color::yellow = Color(1.f, 1.f, 0.f);
+const Color Color::pink = Color(1.f, 0.f, 1.f);
+const Color Color::cyan = Color(0.f, 1.f, 1.f);
 
 const Color Color::grid_red = Color(0.619f, 0.235f, 0.290f);
 const Color Color::grid_green = Color(0.396f, 0.552f, 0.145f);

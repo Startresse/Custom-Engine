@@ -6,10 +6,10 @@ void update_framebuffer(GLFWwindow* window, int width, int height)
     glViewport(0, 0, width, height);
     App* app = (App*) glfwGetWindowUserPointer(window);
 
-    constexpr float fov = glm::radians(45.0f);
+    constexpr float fov = glm::radians(45.f);
     float aspect_ratio = static_cast<float>(app->window_width()) / static_cast<float>(app->window_height());
     float near_plane = 0.1f;
-    float far_plane = 100.0f;
+    float far_plane = 100.f;
     app->camera.set_projection(glm::perspective(fov, aspect_ratio, near_plane, far_plane));
 }
 

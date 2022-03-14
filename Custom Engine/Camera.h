@@ -9,8 +9,8 @@
 class Camera
 {
 public:
-    Camera() : Camera(glm::vec3(0.0f, 2.0f, 3.0f)) {}
-    Camera(glm::vec3 position_) : Camera(position_, glm::vec3(0.0f, 0.0f, 0.0f)) {}
+    Camera() : Camera(default_position) {}
+    Camera(glm::vec3 position_) : Camera(position_, default_target) {}
     Camera(glm::vec3 position_, glm::vec3 target_) :
         position_v(position_), target_v(target_)
     {
@@ -29,6 +29,9 @@ public:
     glm::vec3 direction() const { return direction_v; }
     glm::vec3 right() const { return right_v; }
     glm::vec3 up() const { return up_v; }
+
+    static constexpr glm::vec3 default_position = 2.f * Direction::up + 3.f * Direction::forward;
+    static constexpr glm::vec3 default_target = glm::vec3(0.f);
 
 private:
     glm::vec3 position_v;

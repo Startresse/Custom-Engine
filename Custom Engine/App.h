@@ -22,8 +22,9 @@ typedef GLFWwindow* Window;
 class App
 {
 public:
-    App() : App(640, 480) {}
-    App(unsigned int window_width, unsigned int window_height) : App(window_width, window_height, 4, 6) {}
+    App() : App(default_width, default_height) {}
+    App(unsigned int window_width, unsigned int window_height)
+        : App(window_width, window_height, default_major, default_minor) {}
 
     App(unsigned int window_width, unsigned int window_height, int major_gl_version, int minor_gl_version) :
         window(nullptr)
@@ -41,6 +42,12 @@ public:
 
     int window_width();
     int window_height();
+
+    static constexpr unsigned int default_width = 640;
+    static constexpr unsigned int default_height = 480;
+
+    static constexpr int default_major = 4;
+    static constexpr int default_minor = 6;
 
 protected:
     Window window;

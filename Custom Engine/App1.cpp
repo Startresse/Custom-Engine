@@ -26,18 +26,17 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 
 int App1::init()
 {
+    glfwSetKeyCallback(window, key_callback);
 
-    // Meshes
+    // Shader
     program = Shader("shaders/vertexApp1.glsl", "shaders/fragmentApp1.glsl");
 
+    // Meshes
     meshes.push_back(read_mesh("data/cube.obj"));
     //meshes.push_back(read_mesh("data/cornell.obj"));
 
     // Camera
-    camera.set_position(glm::vec3(0.0f, 2.0f, 3.0f));
-    camera.set_target(glm::vec3(0.0f, 0.0f, 0.0f));
-
-    glfwSetKeyCallback(window, key_callback);
+    camera.set_target(glm::vec3(0.f));
 
     return 0;
 }
@@ -48,7 +47,8 @@ int App1::render()
     glClearColor(c.x, c.y, c.z, c.w);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    camera.set_position(glm::vec3(glm::rotate(glm::mat4(1.0), (float)glfwGetTime(), glm::vec3(0, 1, 0)) * glm::vec4(0.0f, 1.0f, 3.0f, 1.0f)));
+    glm::vec4 camera_pos_init_h = glm::vec4(Direction::up + 3.f * Direction::forward, 1.f);
+    camera.set_position(glm::vec3(glm::rotate(glm::mat4(1.0), (float)glfwGetTime(), Direction::up) * camera_pos_init_h));
     glm::mat4 view = camera.view();
     glm::mat4 proj = camera.projection();
     glm::mat4 mvp = proj * view * glm::mat4(1.0);
