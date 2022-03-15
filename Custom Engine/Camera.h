@@ -21,6 +21,13 @@ public:
     void set_target(glm::vec3 pos);
     void set_projection(glm::mat4 proj) { projection_mat = proj; }
 
+    void translate(glm::vec3 v);
+    //void rotate_around_target(float angle, glm::vec3 axis = Direction::up);
+    //void rotate_around_position(float angle, glm::vec3 axis = Direction::up);
+
+    void zoom(double forward);
+    //void set_zoom_speed(float new_speed_);
+
     glm::mat4 view() const { return view_mat; }
     glm::mat4 projection() const { return projection_mat; }
 
@@ -42,6 +49,9 @@ private:
 
     glm::mat4 view_mat;
     glm::mat4 projection_mat;
+
+    // zoom speed is fraction sweeped each wheel click
+    float zoom_speed = 0.1f;
 
     void recalculate();
 

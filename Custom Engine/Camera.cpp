@@ -20,3 +20,20 @@ void Camera::set_target(glm::vec3 pos)
     target_v = pos;
     recalculate();
 }
+
+void Camera::translate(glm::vec3 v)
+{
+    position_v += v;
+    target_v += v;
+
+    recalculate();
+}
+
+void Camera::zoom(double forward)
+{
+    assert(0.f <= zoom_speed && zoom_speed <= 1.f);
+
+    position_v += static_cast<float>(forward) * (position_v - target_v) * zoom_speed;
+
+    recalculate();
+}

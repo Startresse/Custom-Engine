@@ -4,7 +4,7 @@
 void update_framebuffer(GLFWwindow* window, int width, int height)
 {
     glViewport(0, 0, width, height);
-    App* app = (App*) glfwGetWindowUserPointer(window);
+    App* app = static_cast<App*>(glfwGetWindowUserPointer(window));
 
     constexpr float fov = glm::radians(45.f);
     float aspect_ratio = static_cast<float>(app->window_width()) / static_cast<float>(app->window_height());
