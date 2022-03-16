@@ -55,7 +55,7 @@ int App1::init()
     //meshes.push_back(read_mesh("data/cornell.obj"));
 
     // Camera
-    camera.set_target(glm::vec3(0.f));
+    camera.set_target(glm::vec3(0.f, 0.f, 0.f));
     glm::vec4 camera_pos_init_h = glm::vec4(Direction::up + 3.f * Direction::forward, 1.f);
     camera.set_position(camera_pos_init_h);
 
@@ -64,6 +64,10 @@ int App1::init()
 
 int App1::render()
 {
+    //double fps = 1.f / (glfwGetTime() - last_time);
+    //last_time = glfwGetTime();
+    //std::cout << fps << " fps" << std::endl;
+
     Color c = Color::background_grey;
     glClearColor(c.x, c.y, c.z, c.w);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -72,6 +76,7 @@ int App1::render()
     //camera.set_position(glm::vec3(glm::rotate(glm::mat4(1.0), (float)glfwGetTime(), Direction::up) * camera_pos_init_h));
     //camera.translate(glm::vec3(0.005f, 0.f, 0.f));
     //camera.zoom(sin(glfwGetTime()) >= 0.f);
+    camera.rotate_around_target(glm::radians(90.f)/ 144.f, glm::vec3(1, 0.1, 0));
 
     glm::mat4 view = camera.view();
     glm::mat4 proj = camera.projection();

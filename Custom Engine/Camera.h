@@ -22,7 +22,7 @@ public:
     void set_projection(glm::mat4 proj) { projection_mat = proj; }
 
     void translate(glm::vec3 v);
-    //void rotate_around_target(float angle, glm::vec3 axis = Direction::up);
+    void rotate_around_target(float angle, glm::vec3 axis = Direction::up);
     //void rotate_around_position(float angle, glm::vec3 axis = Direction::up);
 
     void zoom(double forward);
@@ -41,6 +41,7 @@ public:
     static constexpr glm::vec3 default_target = glm::vec3(0.f);
 
 private:
+    // TODO add quaternion
     glm::vec3 position_v;
     glm::vec3 target_v;
     glm::vec3 direction_v;

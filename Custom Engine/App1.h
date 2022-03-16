@@ -28,5 +28,7 @@ private:
     Shader program;
 
     std::vector<Mesh> meshes;
+
+    double last_time = 0.f;
 };
 
