@@ -35,6 +35,7 @@ public:
     glm::vec3 position() const { return position_v; }
     glm::vec3 target() const { return target_v; }
     glm::vec3 up() const { return up_v; }
+    glm::vec3 right() const { return glm::normalize(glm::cross(up_v, direction())); }
 
 
     /* SETTERS */

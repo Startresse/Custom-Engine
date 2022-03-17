@@ -58,14 +58,15 @@ int App1::handle_input()
         glm::dvec2 current_mouse_pos;
         glfwGetCursorPos(window, &(current_mouse_pos.x), &(current_mouse_pos.y));
 
-        glm::dvec2 diff = last_mouse_pos - current_mouse_pos;
+        glm::vec2 diff = last_mouse_pos - current_mouse_pos;
+        diff.y = -diff.y; // up is down in 2D
 
         // rotate along x diff
-        camera.rotate_around_target(0.3f * glm::radians(static_cast<float>(diff.x)));
+        camera.rotate_around_target(0.5f * glm::radians(diff.x), Direction::up);
 
         // rotate along y diff
         glm::vec3 rotation_axis = glm::normalize(glm::cross(camera.direction(), camera.up()));
-        camera.rotate_around_target(0.3f * glm::radians(static_cast<float>(-diff.y)), rotation_axis);
+        camera.rotate_around_target(0.3f * glm::radians(diff.y), rotation_axis);
 
         // update last
         glfwGetCursorPos(window, &(last_mouse_pos.x), &(last_mouse_pos.y));
@@ -127,7 +128,7 @@ int App1::render()
 
     glm::mat4 trans = glm::mat4(1.0);
     //trans = glm::rotate(trans, (float)glfwGetTime(), glm::normalize(glm::vec3(0.0, 1.0, 0.0)));
-    //trans = glm::translate(trans, glm::vec3(-0.5, -0.5, 0.0f));
+    trans = glm::translate(trans, glm::vec3(-0.5f));
     //trans = glm::rotate(trans, 45.0f, glm::normalize(glm::vec3(0.5, 0.5, 0.0)));
 
     default_axes.draw(mvp);
@@ -139,6 +140,7 @@ int App1::render()
     program.setMat4("model", trans);
     program.setMat4("view", view);
     program.setMat4("projection", proj);
+    program.setVec3("light_pos", 10.f * camera.direction() + 3.0f * camera.up() - 2.0f * camera.right());
 
     for (auto& mesh : meshes)
         mesh.draw(program.ID);

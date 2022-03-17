@@ -5,13 +5,14 @@ in vec3 p;
 
 out vec4 frag_color;
 
-vec3 light_color = vec3(0.8, 0.5, 0.3);
-vec3 object_color = vec3(1.0, 1.0, 1.0);
-vec3 light_pos = vec3(0.0, 0.0, 30.0);
+vec3 light_color = vec3(0.8);
+vec3 object_color = vec3(0.8);
+
+uniform vec3 light_pos;
 
 void main()
 {
-    float ambient_strength = 0.1f;
+    float ambient_strength = 0.3f;
     vec3 ambient = ambient_strength * light_color;
 
     vec3 norm = normalize(n);
@@ -20,6 +21,6 @@ void main()
     float diff = max(dot(n, light_dir), 0.0);
     vec3 diffuse = diff * light_color;
 
-    vec3 result = (ambient + diffuse) * object_color;
+    vec3 result = (ambient_strength * light_color + (1.f - ambient_strength) * diffuse) * object_color;
     frag_color = vec4(result, 1.0);
 }
