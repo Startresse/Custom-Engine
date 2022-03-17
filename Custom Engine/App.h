@@ -74,6 +74,8 @@ protected:
     /// <returns>>=0 if it worked, some other integer otherwise.</returns>
     virtual int quit() = 0;
 
+    virtual int handle_input() = 0;
+
     Window create_window(int width, int height, int major, int minor);
 
 };

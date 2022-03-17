@@ -105,8 +105,6 @@ int App1::init()
 
 int App1::render()
 {
-    handle_input();
-
     //double fps = 1.f / (glfwGetTime() - last_time);
     //last_time = glfwGetTime();
     //std::cout << fps << " fps" << std::endl;

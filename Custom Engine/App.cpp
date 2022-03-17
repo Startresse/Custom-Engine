@@ -80,6 +80,8 @@ int App::run()
         // Check if any events have been activiated (key pressed, mouse moved etc.) and call corresponding response functions
         glfwPollEvents();
 
+        handle_input();
+
         render();
 
         // Display calculated framebuffer (back to front) and prepares displayed framebuffer to be drawn (front to back)
