@@ -60,8 +60,14 @@ int App1::handle_input()
 
         glm::dvec2 diff = last_mouse_pos - current_mouse_pos;
 
-        camera.rotate_around_target(0.3f * glm::radians(static_cast<float>(diff.x)), Direction::up);
+        // rotate along x diff
+        camera.rotate_around_target(0.3f * glm::radians(static_cast<float>(diff.x)));
 
+        // rotate along y diff
+        glm::vec3 rotation_axis = glm::normalize(glm::cross(camera.direction(), camera.up()));
+        camera.rotate_around_target(0.3f * glm::radians(static_cast<float>(-diff.y)), rotation_axis);
+
+        // update last
         glfwGetCursorPos(window, &(last_mouse_pos.x), &(last_mouse_pos.y));
     }
 

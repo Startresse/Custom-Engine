@@ -63,6 +63,8 @@ void Camera::zoom(double forward)
 
 void Camera::rotate_around_target(float angle, glm::vec3 axis)
 {
+    assert(glm::length(axis) > 0);
+
     glm::quat q = glm::angleAxis(angle, glm::normalize(axis));
     position_v = q * (position_v - target_v) + target_v;
     up_v = q * up_v;
@@ -72,6 +74,8 @@ void Camera::rotate_around_target(float angle, glm::vec3 axis)
 
 void Camera::rotate_around_position(float angle, glm::vec3 axis)
 {
+    assert(glm::length(axis) > 0);
+
     glm::quat q = glm::angleAxis(angle, glm::normalize(axis));
     target_v = q * (target_v - position_v) + position_v;
     up_v = q * up_v;
