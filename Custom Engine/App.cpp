@@ -53,11 +53,6 @@ Window App::create_window(int w, int h, int major, int minor)
     return window;
 }
 
-int App::key_state(int key_code)
-{
-    return glfwGetKey(window, key_code);
-}
-
 int App::window_width()
 {
     glfwGetFramebufferSize(window, &width, &height);

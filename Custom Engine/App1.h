@@ -16,13 +16,28 @@
 class App1 : public App
 {
 public:
+    /* CONSTRUCTORS */
+
     using App::App;
+
+
+    /* APP OVERLOAD */
 
     int init();
     int render();
     int quit();
 
+
+    /* APP1 SPECIFIC FUNCTIONS*/
+
+    int handle_input();
+
+
+    /* CALLBACK RELATIVE VALUES*/
+
     Axes default_axes;
+
+    glm::dvec2 last_mouse_pos;
 
 private:
     Shader program;

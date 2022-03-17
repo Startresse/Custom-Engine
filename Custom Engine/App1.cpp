@@ -1,7 +1,9 @@
 #include "App1.h"
 
+/* CALLBACKS */
+
 // Keyboard input
-void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+void keyboard_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
     App1* app = static_cast<App1*>(glfwGetWindowUserPointer(window));
 
@@ -25,6 +27,17 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
     }
 }
 
+// Mouse input
+void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
+{
+    App1* app = static_cast<App1*>(glfwGetWindowUserPointer(window));
+    glm::dvec2& a = app->last_mouse_pos;
+
+    // Set last mouse position for draging mouse with wheel
+    if (button == GLFW_MOUSE_BUTTON_MIDDLE && action == GLFW_PRESS)
+            glfwGetCursorPos(window, &(a.x), &(a.y));
+}
+
 // Scroll wheel input
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
@@ -32,6 +45,27 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
     
     // Scroll : zoom (forward) / unzoom (bakwards)
     app->camera.zoom(-yoffset);
+}
+
+
+/* APP1 */
+
+int App1::handle_input()
+{
+    // Mouse middle button hold to rotate camera
+    if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_MIDDLE))
+    {
+        glm::dvec2 current_mouse_pos;
+        glfwGetCursorPos(window, &(current_mouse_pos.x), &(current_mouse_pos.y));
+
+        glm::dvec2 diff = last_mouse_pos - current_mouse_pos;
+
+        camera.rotate_around_target(0.3f * glm::radians(static_cast<float>(diff.x)), Direction::up);
+
+        glfwGetCursorPos(window, &(last_mouse_pos.x), &(last_mouse_pos.y));
+    }
+
+    return 0;
 }
 
 int App1::init()
@@ -42,8 +76,8 @@ int App1::init()
     else
         std::cout << "WARNING : mouse raw motion not supported" << std::endl;
 
-    glfwSetKeyCallback(window, key_callback);
-    //glfwSetMouseButtonCallback(window, mouse_button_callback);
+    glfwSetKeyCallback(window, keyboard_callback);
+    glfwSetMouseButtonCallback(window, mouse_button_callback);
     glfwSetScrollCallback(window, scroll_callback);
 
 
@@ -64,6 +98,8 @@ int App1::init()
 
 int App1::render()
 {
+    handle_input();
+
     //double fps = 1.f / (glfwGetTime() - last_time);
     //last_time = glfwGetTime();
     //std::cout << fps << " fps" << std::endl;
@@ -76,7 +112,7 @@ int App1::render()
     //camera.set_position(glm::vec3(glm::rotate(glm::mat4(1.0), (float)glfwGetTime(), Direction::up) * camera_pos_init_h));
     //camera.translate(glm::vec3(0.005f, 0.f, 0.f));
     //camera.zoom(sin(glfwGetTime()) >= 0.f);
-    camera.rotate_around_target(glm::radians(90.f)/ 144.f, glm::vec3(1, 0.1, 0));
+    //camera.rotate_around_target(glm::radians(90.f)/ 144.f, glm::vec3(1, 0.1, 0));
     //camera.rotate_around_position(glm::radians(90.f)/ 144.f, glm::vec3(1, 0.1, 0));
 
     glm::mat4 view = camera.view();

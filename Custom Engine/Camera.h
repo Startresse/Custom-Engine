@@ -75,6 +75,7 @@ private:
     // zoom speed is fraction sweeped each wheel click
     float zoom_speed = 0.1f;
 
+
     /* INTERNAL CALCULATIONS */
 
     void recalculate();

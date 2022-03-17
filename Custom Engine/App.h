@@ -76,7 +76,5 @@ protected:
 
     Window create_window(int width, int height, int major, int minor);
 
-    int key_state(int key_code);
-
 };
 
