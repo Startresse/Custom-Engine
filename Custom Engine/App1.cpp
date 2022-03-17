@@ -77,6 +77,7 @@ int App1::render()
     //camera.translate(glm::vec3(0.005f, 0.f, 0.f));
     //camera.zoom(sin(glfwGetTime()) >= 0.f);
     camera.rotate_around_target(glm::radians(90.f)/ 144.f, glm::vec3(1, 0.1, 0));
+    //camera.rotate_around_position(glm::radians(90.f)/ 144.f, glm::vec3(1, 0.1, 0));
 
     glm::mat4 view = camera.view();
     glm::mat4 proj = camera.projection();
