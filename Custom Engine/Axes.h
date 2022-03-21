@@ -14,7 +14,7 @@
 #include "Color.h"
 #include "Direction.h"
 
-namespace Grid
+namespace GridParam
 {
     constexpr int size = 10;
     constexpr float line_size = 2.0f;
@@ -40,10 +40,10 @@ struct Line
     Point b;
 };
 
-class Axes
+class Grid
 {
 public:
-    Axes() : vao(0), vbo(0) { setup_grid(); };
+    Grid() : vao(0), vbo(0) { setup_grid(); };
 
     void draw(const glm::mat4& mvp);
 

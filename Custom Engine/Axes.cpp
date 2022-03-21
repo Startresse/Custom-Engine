@@ -1,6 +1,6 @@
 #include "Axes.h"
 
-void Axes::create_buffers()
+void Grid::create_buffers()
 {
     program = Shader("shaders/vertexAxes.glsl", "shaders/fragmentAxes.glsl");
 
@@ -29,7 +29,7 @@ void Axes::create_buffers()
     glBindVertexArray(0);
 }
 
-void Axes::draw(const glm::mat4& mvp)
+void Grid::draw(const glm::mat4& mvp)
 {
     if (!vao)
         create_buffers();
@@ -42,7 +42,7 @@ void Axes::draw(const glm::mat4& mvp)
     float current_line_width;
     glGetFloatv(GL_LINE_WIDTH, &current_line_width);
 
-    glLineWidth(Grid::line_size);
+    glLineWidth(GridParam::line_size);
 
     program.setMat4("MVP", mvp);
     const GLsizei axes_size = 2 * static_cast<GLsizei>(axes.size());
@@ -58,16 +58,16 @@ void Axes::draw(const glm::mat4& mvp)
     glBindVertexArray(0);
 }
 
-void Axes::setup_grid()
+void Grid::setup_grid()
 {
     grid.clear();
 
     Color color;
     glm::vec3 a, b;
-    for (int i = -Grid::size; i <= Grid::size; ++i)
+    for (int i = -GridParam::size; i <= GridParam::size; ++i)
     {
         float i_f = static_cast<float>(i);
-        float gs = static_cast<float>(Grid::size);
+        float gs = static_cast<float>(GridParam::size);
 
         // along width 
         color = i ? Color::grid_grey : Color::grid_red;
