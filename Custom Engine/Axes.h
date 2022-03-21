@@ -14,12 +14,6 @@
 #include "Color.h"
 #include "Direction.h"
 
-namespace GridParam
-{
-    constexpr int size = 10;
-    constexpr float line_size = 2.0f;
-}
-
 struct Point
 {
     Point() : Point(glm::vec3(0.0f, 0.0f, 0.0f)) {}
@@ -40,49 +34,62 @@ struct Line
     Point b;
 };
 
-class Grid
+class AxesBase
 {
 public:
-    Grid() : vao(0), vbo(0) { setup_grid(); };
+    AxesBase() : AxesBase(default_vertex_shader, default_fragment_shader) {}
+    AxesBase(const std::string& vs, const std::string& fs) : vertex_shader(vs), fragment_shader(fs), vao(0), vbo(0) {};
 
-    void draw(const glm::mat4& mvp);
+    void draw(const glm::mat4& m);
 
     void toggle() { display = !display; }
 
-private:
+    static const std::string default_vertex_shader;
+    static const std::string default_fragment_shader;
+
+    static constexpr float line_size = 1.f;
+
+protected:
 
     bool display = true;
 
     void create_buffers();
-    void setup_grid();
+    void draw_base();
 
-    std::vector<Line> grid;
+    std::vector<Line> lines;
+    std::string vertex_shader;
+    std::string fragment_shader;
 
     unsigned int vao, vbo;
     Shader program;
+
 };
 
-class Axes
+class Axes : public AxesBase
 {
 public:
-    Axes() : vao(0), vbo(0) {}
+    Axes() : AxesBase("shaders/vertexAxes.glsl", "shaders/fragmentAxes.glsl")
+    {
+        lines = 
+        {
+            Line({0, 0, 0}, Direction::right, Color::grid_red),
+            Line({0, 0, 0}, Direction::up, Color::grid_blue),
+            Line({0, 0, 0}, Direction::forward, Color::grid_green),
+        };
+    }
+};
 
-    void draw(const glm::mat4& view);
+class Grid : public AxesBase
+{
+public:
 
-    void toggle() { display = !display; }
+    Grid() : AxesBase("shaders/vertexAxes.glsl", "shaders/fragmentAxes.glsl") { setup_grid(); }
+
+    static constexpr float line_size = 2.f;
+    static constexpr int size = 10;
 
 private:
-    bool display = true;
 
-    void create_buffers();
+    void setup_grid();
 
-    const std::vector<Line> axes =
-    {
-        Line({0, 0, 0}, Direction::right, Color::grid_red),
-        Line({0, 0, 0}, Direction::up, Color::grid_blue),
-        Line({0, 0, 0}, Direction::forward, Color::grid_green),
-    };
-
-    unsigned int vao, vbo;
-    Shader program;
 };
