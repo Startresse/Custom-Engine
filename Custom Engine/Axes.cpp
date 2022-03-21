@@ -1,5 +1,8 @@
 #include "Axes.h"
 
+
+/* AXES BASE */
+
 const std::string AxesBase::default_vertex_shader = "shaders/vertexAxes.glsl";
 const std::string AxesBase::default_fragment_shader = "shaders/fragmentAxes.glsl";
 
@@ -25,7 +28,7 @@ void AxesBase::create_buffers()
     glBindVertexArray(0);
 }
 
-void AxesBase::draw(const glm::mat4& m)
+void AxesBase::pre_draw()
 {
     if (!vao)
         create_buffers();
@@ -35,12 +38,13 @@ void AxesBase::draw(const glm::mat4& m)
     glBindVertexArray(vao);
     program.use();
 
-    float current_line_width;
     glGetFloatv(GL_LINE_WIDTH, &current_line_width);
 
     glLineWidth(line_size);
+}
 
-    program.setMat4("MVP", m);
+void AxesBase::post_draw()
+{
     if (display)
         glDrawArrays(GL_LINES, 0, 2 * static_cast<GLsizei>(lines.size()));
 
@@ -50,7 +54,20 @@ void AxesBase::draw(const glm::mat4& m)
     glBindVertexArray(0);
 }
 
-void Grid::setup_grid()
+
+/* AXES */
+
+void Axes::draw(const glm::mat4& m)
+{
+    pre_draw();
+    program.setMat4("MVP", m);
+    post_draw();
+}
+
+
+/* GRID */
+
+Grid::Grid() : AxesBase("shaders/vertexAxes.glsl", "shaders/fragmentAxes.glsl")
 {
     lines.clear();
 
@@ -74,6 +91,12 @@ void Grid::setup_grid()
         lines.push_back(Line(a, b, color));
     }
 
-    // TODO reupdate buffer
+}
+
+void Grid::draw(const glm::mat4& m)
+{
+    pre_draw();
+    program.setMat4("MVP", m);
+    post_draw();
 }
 

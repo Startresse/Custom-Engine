@@ -34,14 +34,18 @@ struct Line
     Point b;
 };
 
+/// <summary>
+/// Automates all GL parts of grid display.
+/// Just inherit this class and create a draw function which calk pre-draw and post draw
+/// to setup shaders uniforms. (see Grid::draw or Axes::draw)
+/// </summary>
 class AxesBase
 {
 public:
     AxesBase() : AxesBase(default_vertex_shader, default_fragment_shader) {}
     AxesBase(const std::string& vs, const std::string& fs) : vertex_shader(vs), fragment_shader(fs), vao(0), vbo(0) {};
 
-    void draw(const glm::mat4& m);
-
+    // Keybind this to toggle or untoggle in App keycallbacks
     void toggle() { display = !display; }
 
     static const std::string default_vertex_shader;
@@ -54,7 +58,8 @@ protected:
     bool display = true;
 
     void create_buffers();
-    void draw_base();
+    void pre_draw();
+    void post_draw();
 
     std::vector<Line> lines;
     std::string vertex_shader;
@@ -62,6 +67,10 @@ protected:
 
     unsigned int vao, vbo;
     Shader program;
+
+private:
+
+    float current_line_width = 0.f;
 
 };
 
@@ -77,19 +86,18 @@ public:
             Line({0, 0, 0}, Direction::forward, Color::grid_green),
         };
     }
+
+    void draw(const glm::mat4& m);
 };
 
 class Grid : public AxesBase
 {
 public:
 
-    Grid() : AxesBase("shaders/vertexAxes.glsl", "shaders/fragmentAxes.glsl") { setup_grid(); }
+    Grid();
+
+    void draw(const glm::mat4& m);
 
     static constexpr float line_size = 2.f;
     static constexpr int size = 10;
-
-private:
-
-    void setup_grid();
-
 };
