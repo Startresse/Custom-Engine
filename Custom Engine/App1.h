@@ -37,7 +37,8 @@ public:
 
     /* CALLBACK RELATIVE VALUES*/
 
-    Grid default_axes;
+    Grid grid;
+    Axes axes;
 
     glm::dvec2 last_mouse_pos;
 

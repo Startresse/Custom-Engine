@@ -9,11 +9,11 @@ void keyboard_callback(GLFWwindow* window, int key, int scancode, int action, in
 
     // G + 1 : toggle grid
     if (key == GLFW_KEY_1 && action == GLFW_PRESS && glfwGetKey(window, GLFW_KEY_G))
-        app->default_axes.toggle_grid_display();
+        app->grid.toggle();
 
     // G + 2 : toggle axes
     if (key == GLFW_KEY_2 && action == GLFW_PRESS && glfwGetKey(window, GLFW_KEY_G))
-        app->default_axes.toggle_axes_display();
+        app->axes.toggle();
 
     // W : toggle wireframe
     if (key == GLFW_KEY_W && action == GLFW_PRESS)
@@ -160,7 +160,8 @@ int App1::render()
     trans = glm::translate(trans, glm::vec3(-0.5f));
     //trans = glm::rotate(trans, 45.0f, glm::normalize(glm::vec3(0.5, 0.5, 0.0)));
 
-    default_axes.draw(mvp);
+    grid.draw(mvp);
+    axes.draw(mvp);
     // grid won't display over anything
     //glClear(GL_DEPTH_BUFFER_BIT);
 

@@ -47,27 +47,42 @@ public:
 
     void draw(const glm::mat4& mvp);
 
-    void toggle_axes_display() { display_axes = !display_axes; }
-    void toggle_grid_display() { display_grid = !display_grid; }
+    void toggle() { display = !display; }
 
 private:
 
-    bool display_axes = false;
-    bool display_grid = true;
+    bool display = true;
 
     void create_buffers();
     void setup_grid();
 
-    // TODO put axes in corner instead
-    const std::vector<Line> axes =
-    {
-        Line({0, 0, 0}, Direction::right, Color::grid_red),
-        Line({0, 0, 0}, Direction::up, Color::grid_blue),
-        Line({0, 0, 0}, Direction::forward, Color::grid_green),
-    };
     std::vector<Line> grid;
 
     unsigned int vao, vbo;
     Shader program;
 };
 
+class Axes
+{
+public:
+    Axes() : vao(0), vbo(0) {}
+
+    void draw(const glm::mat4& view);
+
+    void toggle() { display = !display; }
+
+private:
+    bool display = true;
+
+    void create_buffers();
+
+    const std::vector<Line> axes =
+    {
+        Line({0, 0, 0}, Direction::right, Color::grid_red),
+        Line({0, 0, 0}, Direction::up, Color::grid_blue),
+        Line({0, 0, 0}, Direction::forward, Color::grid_green),
+    };
+
+    unsigned int vao, vbo;
+    Shader program;
+};

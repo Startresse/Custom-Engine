@@ -1,5 +1,52 @@
 #include "Axes.h"
 
+void Axes::create_buffers()
+{
+    program = Shader("shaders/vertexAxes.glsl", "shaders/fragmentAxes.glsl");
+
+    glGenVertexArrays(1, &vao);
+    glGenBuffers(1, &vbo);
+    glBindVertexArray(vao);
+
+    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+
+    GLsizei buffer_size = static_cast<GLsizei>(sizeof(Line) * axes.size());
+    glBufferData(GL_ARRAY_BUFFER, buffer_size, axes.data(), GL_STATIC_DRAW);
+
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Point), (void*)0);
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(Point), (void*)sizeof(glm::vec3));
+    glEnableVertexAttribArray(1);
+
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindVertexArray(0);
+}
+
+void Axes::draw(const glm::mat4& view)
+{
+    if (!vao)
+        create_buffers();
+
+    assert(vao);
+
+    glBindVertexArray(vao);
+    program.use();
+
+    float current_line_width;
+    glGetFloatv(GL_LINE_WIDTH, &current_line_width);
+
+    glLineWidth(GridParam::line_size); // TODO Change
+
+    program.setMat4("MVP", view);
+    if (display)
+        glDrawArrays(GL_LINES, 0, 2 * static_cast<GLsizei>(axes.size()));
+
+    glLineWidth(current_line_width);
+
+    glUseProgram(0);
+    glBindVertexArray(0);
+}
+
 void Grid::create_buffers()
 {
     program = Shader("shaders/vertexAxes.glsl", "shaders/fragmentAxes.glsl");
@@ -9,16 +56,7 @@ void Grid::create_buffers()
     glBindVertexArray(vao);
 
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(Line) * (axes.size() + grid.size()), nullptr, GL_STATIC_DRAW);
-
-    // put in update buffers
-    GLsizei offset = 0;
-    GLsizei sub_buffer_size = static_cast<GLsizei>(sizeof(Line) * axes.size());
-    glBufferSubData(GL_ARRAY_BUFFER, offset, sub_buffer_size, axes.data());
-
-    offset += sub_buffer_size;
-    sub_buffer_size = static_cast<GLsizei>(sizeof(Line) * grid.size());
-    glBufferSubData(GL_ARRAY_BUFFER, offset, sub_buffer_size, grid.data());
+    glBufferData(GL_ARRAY_BUFFER, sizeof(Line) * grid.size(), grid.data(), GL_STATIC_DRAW);
 
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Point), (void*)0);
     glEnableVertexAttribArray(0);
@@ -45,12 +83,8 @@ void Grid::draw(const glm::mat4& mvp)
     glLineWidth(GridParam::line_size);
 
     program.setMat4("MVP", mvp);
-    const GLsizei axes_size = 2 * static_cast<GLsizei>(axes.size());
-    const GLsizei grid_size = 2 * static_cast<GLsizei>(grid.size());
-    if (display_axes)
-        glDrawArrays(GL_LINES, 0, axes_size);
-    if (display_grid)
-        glDrawArrays(GL_LINES, axes_size, grid_size);
+    if (display)
+        glDrawArrays(GL_LINES, 0, 2 * static_cast<GLsizei>(grid.size()));
 
     glLineWidth(current_line_width);
 
