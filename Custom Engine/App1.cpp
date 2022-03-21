@@ -7,13 +7,13 @@ void keyboard_callback(GLFWwindow* window, int key, int scancode, int action, in
 {
     App1* app = static_cast<App1*>(glfwGetWindowUserPointer(window));
 
-    // G + 1 : toggle axes
+    // G + 1 : toggle grid
     if (key == GLFW_KEY_1 && action == GLFW_PRESS && glfwGetKey(window, GLFW_KEY_G))
-        app->default_axes.toggle_axes_display();
-
-    // G + 2 : toggle grid
-    if (key == GLFW_KEY_2 && action == GLFW_PRESS && glfwGetKey(window, GLFW_KEY_G))
         app->default_axes.toggle_grid_display();
+
+    // G + 2 : toggle axes
+    if (key == GLFW_KEY_2 && action == GLFW_PRESS && glfwGetKey(window, GLFW_KEY_G))
+        app->default_axes.toggle_axes_display();
 
     // W : toggle wireframe
     if (key == GLFW_KEY_W && action == GLFW_PRESS)
@@ -35,14 +35,20 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 
     // Set last mouse position for draging mouse with wheel
     if (button == GLFW_MOUSE_BUTTON_MIDDLE && action == GLFW_PRESS)
-            glfwGetCursorPos(window, &(a.x), &(a.y));
+    {
+        glfwGetCursorPos(window, &(a.x), &(a.y));
+        if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT))
+            app->camera_movement = App1::CameraMovement::Translate;
+        else
+            app->camera_movement = App1::CameraMovement::Rotate;
+    }
 }
 
 // Scroll wheel input
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
     App1* app = static_cast<App1*>(glfwGetWindowUserPointer(window));
-    
+
     // Scroll : zoom (forward) / unzoom (bakwards)
     app->camera.zoom(-yoffset);
 }
@@ -59,14 +65,39 @@ int App1::handle_input()
         glfwGetCursorPos(window, &(current_mouse_pos.x), &(current_mouse_pos.y));
 
         glm::vec2 diff = last_mouse_pos - current_mouse_pos;
-        diff.y = -diff.y; // up is down in 2D
+        // x = right, y = up
+        diff.y = -diff.y;
+        // diff represents percentage of window browsed
+        diff.x = diff.x / window_width();
+        diff.y = diff.y / window_height();
 
-        // rotate along x diff
-        camera.rotate_around_target(0.5f * glm::radians(diff.x), Direction::up);
+        switch (camera_movement)
+        {
+        case CameraMovement::Rotate:
 
-        // rotate along y diff
-        glm::vec3 rotation_axis = glm::normalize(glm::cross(camera.direction(), camera.up()));
-        camera.rotate_around_target(0.3f * glm::radians(diff.y), rotation_axis);
+            diff.x *= 4.f * static_cast<float>(std::numbers::pi);
+            diff.y *= 2.f * static_cast<float>(std::numbers::pi);
+
+            // rotate along x diff
+            camera.rotate_around_target(diff.x, Direction::up);
+
+            // rotate along y diff
+            glm::vec3 rotation_axis = glm::normalize(glm::cross(camera.direction(), camera.up()));
+            camera.rotate_around_target(diff.y, rotation_axis);
+
+            break;
+        case CameraMovement::Translate:
+
+            glm::vec3 translation = diff.x * camera.right() + diff.y * camera.up();
+            // The closer the target, the lesser the translation
+            translation *= camera.distance_to_target();
+
+            camera.translate(translation);
+
+            break;
+        default:
+            break;
+        }
 
         // update last
         glfwGetCursorPos(window, &(last_mouse_pos.x), &(last_mouse_pos.y));

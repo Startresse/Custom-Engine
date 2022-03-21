@@ -52,7 +52,7 @@ public:
 
 private:
 
-    bool display_axes = true;
+    bool display_axes = false;
     bool display_grid = true;
 
     void create_buffers();

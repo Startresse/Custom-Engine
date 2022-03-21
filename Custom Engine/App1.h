@@ -1,5 +1,7 @@
 #pragma once
 
+#include <numbers>
+
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -38,6 +40,13 @@ public:
     Axes default_axes;
 
     glm::dvec2 last_mouse_pos;
+
+    enum class CameraMovement
+    {
+        Rotate,
+        Translate,
+    };
+    CameraMovement camera_movement;
 
 private:
     Shader program;
