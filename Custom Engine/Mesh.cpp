@@ -188,7 +188,7 @@ Mesh read_mesh(std::string filename)
                     mesh.texcoords.push_back(texcoords_tmp[idt - 1]);
                 if (idn != 0)
                     mesh.normals.push_back(normals_tmp[idn - 1]);
-                mesh.indices.push_back(mesh.positions.size() - 1);
+                mesh.indices.push_back(static_cast<unsigned int>(mesh.positions.size()) - 1);
             }
         }
     }
