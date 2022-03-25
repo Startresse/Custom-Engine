@@ -1,0 +1,364 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>tp3</title>
+  </head>
+  <body>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <b>M2 - Images</b><br>
+    <br>
+    <br>
+    <h1 align="center">TP3 - lancer de rayons <br>
+      et <br>
+      (compute) shaders</h1>
+    <div align="left">
+      <h3>Partie 1 : préparation - compute shaders, storage buffers et
+        storage textures</h3>
+      regardez le fonctionnement de tutos/M2/tuto_raytrace_fragment.cpp
+      et son fragment shader : tutos/M2/raytrace.glsl<br>
+      <br>
+      que faut-il modifier pour en faire une version compute shader ?<br>
+      <br>
+      le compute shader doit construire un rayon pour chaque pixel de
+      l'image et ensuite calculer la plus petite intersection de ce
+      rayon avec les triangles de la scene.<br>
+      <br>
+      quelles sont les entrees / sorties du shader ?<br>
+      quels objets openGL faut-il initialiser pour chaque entrée, et
+      chaque sortie (pour stocker les résultat du compute shader) ?<br>
+      <br>
+      <i>rappels :</i> compute shaders, uniform buffers, (shader)
+      storage buffers, textures, et storage textures / images<br>
+      <br>
+      comme discuté pendant le cours, il y a au moins 2 organisations
+      possibles pour écrire et exécuter le compute shader : soit la
+      boucle sur les rayons est parallélisée, soit c'est la boucle sur
+      les triangles. pour commencer, il est plus simple d'utiliser la
+      1ère solution, paralléliser la boucle sur les rayons.<br>
+      <br>
+      dernière question : comment utiliser gl_GlobalInvocationID,
+      l'indice du thread pour choisir quel pixel calculer ?<br>
+      <br>
+      <br>
+      <div align="center"><img src="cornell.png" alt="" width="45%"><br>
+      </div>
+      <h3>Partie 2 : plus de rayons... </h3>
+      <div align="center"><img src="cornell_ao16.png" alt="" width="45%"><br>
+        <div align="left"><br>
+          et si on calculait, un truc plus rigolo ? comme l'éclairage
+          ambiant ? vous pouvez relire les explications sur comment
+          faire les calculs, dans l'exercice 7 du tp précédent.<br>
+          <br>
+          là encore, il y a plusieurs solutions pour organiser les
+          calculs :<br>
+          <ol>
+            <li>solution directe : un thread calcule l'intersection du
+              rayon primaire (celui du pixel) et ensuite construit
+              plusieurs rayons et calcule leurs intersections pour
+              estimer l'éclairage ambiant. un seul compute shader fait
+              tout le travail.<br>
+              <br>
+            </li>
+            <li>solution découpée : chaque étape du calcul est réalisée
+              par un compute shader différent : génération rayon
+              primaire, intersection rayon, génération rayons indirects,
+              intersection rayons indirects et accumulation du résultat
+              dans l'image. chaque shader écrit ses résultat dans un
+              buffer, qui est relu par le shader qui réalise l'étape
+              suivante.<br>
+            </li>
+          </ol>
+          <p>quelles sont, a priori, les avantages et inconvénients de
+            ces 2 solutions extrèmes ? sur un cpu ? sur un gpu ? quels
+            problèmes peuvent se produire pour les shaders sur un gpu ?
+            comment contourner les limites d'ordonnancement et
+            d'exécution des processeurs du gpu ? peut-on limiter le
+            nombre de fois ou chaque triangle est chargé par un
+            sous-groupe, un groupe de threads ? <br>
+          </p>
+          <p>peut-on imaginer une situation qui fonctionnera mieux avec
+            la solution 1 ou la solution 2 ?<br>
+          </p>
+          <p>proposez une solution plus subtile que ces 2 versions. quel
+            est votre raisonnement pour justifier que votre solution est
+            a priori plus interressante ?<br>
+          </p>
+          <p>pour garder un affichage interactif, il faudra rester
+            raisonnable sur le nombre de rayons utilisés pour estimer
+            l'éclairage ambiant, 4 directions par exemple... mais le
+            résultat sera moche...<br>
+            <i>indication :</i> avant de jouer avec les générateurs de
+            nombres aléatoires sur gpu, utilisez une spirale de
+            Fibonacci pour construire des directions sur l'hemisphere.<br>
+          </p>
+          <p><i>rappel :</i> vous aurez aussi besoin de constuire un
+            repère pour générer les rayons indirects. utilisez la
+            construction du tp précédent.<br>
+            <i><b>mais attention :</b></i> la fonction copysign de GLSL
+            semble bugguée sur pas mal de drivers, utilisez un test
+            direct à la place:<br>
+          </p>
+          <p>
+            <meta http-equiv="content-type" content="text/html;
+              charset=UTF-8">
+            <code>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; float sign= n.z
+              &lt; 0 ? -1 : 1; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+              &nbsp;&nbsp;&nbsp; // au lieu de </code><code><code><code>sign=
+                  std::copysign(1.0f, n.z);</code></code> </code><code></code><br>
+            <code></code><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+              float a= -1.0 / (sign + n.z); </code><code></code><br>
+            <code></code><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+              float d= n.x * n.y * a; </code><code></code><br>
+            <code></code><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              vec3 t= vec3(1.0 + sign * n.x * n.x * a, sign * d, -sign *
+              n.x); </code><code></code><br>
+            <code></code><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              vec3 b= vec3(d, sign + n.y * n.y * a, -n.y);<br>
+              <br>
+            </code></p>
+          <p>commencez par écrire la version directe. et comparez avec
+            votre solution...<br>
+            <br>
+          </p>
+        </div>
+      </div>
+      <h3>Partie 3 : trop de rayons...</h3>
+      <div align="center"><img src="cornellao.png" alt="" width="45%"><br>
+      </div>
+      <br>
+      <div align="left">
+        <meta http-equiv="content-type" content="text/html;
+          charset=UTF-8">
+        L'intégration numérique a besoin de trop d'échantillons / de
+        rayons pour recalculer brutalement chaque image et garder un
+        temps d'affichage interactif. Il est relativement simple de
+        découper le problème : chaque exécution du shader calcule une
+        partie du résultat et accumule petit à petit les N échantillons.
+        Le temps total de calcul ne change pas, mais l'application peut
+        rester interactive.<br>
+        <br>
+        Lorsque la camera (ou les objets, ou les sources...) se déplace,
+        il suffit de repartir de zero, sans attendre la fin du calcul
+        des N échantillons.<br>
+      </div>
+      <br>
+      <div align="left">
+        <meta http-equiv="content-type" content="text/html;
+          charset=UTF-8">
+        <br>
+        <i>pour les curieux :</i> c'est quand meme dommage de jeter tous
+        les calculs lorsque la camera bouge... une idée pour continuer à
+        utiliser les calculs déjà fait, dans les zones qui ne changent
+        pas ou peu, consiste à identifier les points de la scène qui
+        sont toujours visibles dans la nouvelle image et à re-utiliser
+        leur valeur. Pour les autres points, il faudra repartir de zero
+        (ou d'une valeur moyenne des pixels voisins qui restent
+        valides). <br>
+        Ce principe d'accumulation temporelle est utilisé quasiment
+        partout, cf <a
+href="http://developer.download.nvidia.com/gameworks/events/GDC2016/msalvi_temporal_supersampling.pdf">"TAA
+
+
+
+
+
+
+
+
+          / Temporal Supersampling"</a>, M. Salvi, GDC 2016 et <a
+href="https://github.com/playdeadgames/publications/blob/master/INSIDE/GDC2016_Temporal_Reprojection_AA_INSIDE.pdf">"Temporal
+
+
+
+
+
+
+
+
+          Reprojection Anti-Aliasing in INSIDE"</a>, Playdead, GDC 2016<br>
+        <br>
+        <br>
+      </div>
+      <h3>intermède : génération de nombres aléatoires, sur cpu ou gpu</h3>
+      <div align="left">
+        <meta http-equiv="content-type" content="text/html;
+          charset=UTF-8">
+        Comment générer des nombres aléatoires ?<br>
+        <br>
+        La solution la plus simple est d'utiliser un <a
+          href="https://en.wikipedia.org/wiki/Linear_congruential_generator">générateur
+
+
+
+
+
+
+
+
+          linéaire</a> : x<sub>n+1</sub>= (ax<sub>n</sub> + b) % m, et
+        de choisir de <a
+href="https://en.wikipedia.org/wiki/Linear_congruential_generator#Parameters_in_common_use">"bonnes"
+
+
+
+
+
+
+
+
+          valeurs pour a, b, et m</a>, (et x<sub>0</sub>, bien sur)
+        utilisez celles de la glibc par exemple (ou un générateur 32bits
+        dans tous les cas)<br>
+        <br>
+        Reste un détail : comment paralléliser le générateur ? il faut
+        obtenir une séquence de nombres aléatoires différente par pixel
+        ? <br>
+        Une solution directe utilise une valeur x<sub>0</sub> différente
+        pour chaque pixel, mais rien ne garanti que les séquences
+        générées pour des pixels voisins seront indépendantes...<br>
+        <br>
+        Il suffit de se rendre compte que lorsque l'on calcule une image
+        de manière séquentielle, chaque pixel utilise une séquence de
+        termes de la série aléatoire. Le pixel (0, 0) utilise les termes
+        0 à N, le pixel suivant, les termes N à 2N, etc. Il ne reste
+        plus qu'à trouver comment calculer la valeur de x<sub>pN</sub>
+        pour obtenir les termes x<sub>pN</sub> à x<sub>(p+1)N</sub> de
+        chaque pixel p de l'image. Les générateurs de la stl ne
+        fournissent pas une version utilisable de cette fonctionnalité,
+        mais bien sur, il y a une solution.<br>
+        <br>
+        On peut reformuler x<sub>n</sub>= (ax<sub>n-1</sub> + b) % m =
+        (a<sup>n</sup>x<sub>0</sub> + b (a<sup>n</sup>-1) / (a-1)) % m.
+        On peut calculer le terme x<sub>n</sub> directement en fonction
+        de x<sub>0</sub>, sans évaluer les N termes successivement. Mais
+        le calcul n'est pas direct, on ne peut pas représenter la valeur
+        a<sup>n</sup>. Mais comme tous les calculs sont fait modulo m,
+        il y a quand même une solution, cf <a
+          href="https://mcnp.lanl.gov/pdf_files/la-ur-11-04859.pdf">"Random
+
+
+
+
+
+
+
+
+          Number Generation with Arbitrary Strides"</a>, 1994, F. Brown.
+        Voici une classe RNG simplifiée qui inclut cette fonctionnalité
+        :<br>
+        <blockquote>
+          <pre class="moz-quote-pre" wrap="">struct RNG
+{
+    unsigned int x;
+    unsigned int x0;
+
+    RNG( const unsigned int seed ) : x(seed), x0(seed) {}
+
+    // glibc
+    static const unsigned int a= 1103515245;
+    static const unsigned int b= 12345;
+    static const unsigned int m= 1u &lt;&lt; 31;
+   
+    float sample( )    				// renvoie un reel aleatoire dans [0 1]
+    {
+        x= (a*x + b) % m;
+        return float(x) / float(m);
+    }
+
+    unsigned int index( const size_t i )    	// prepare la generation du terme i
+    {
+        unsigned int cur_mul= a;
+        unsigned int cur_add= b;
+        unsigned int acc_mul= 1u;
+        unsigned int acc_add= 0u;
+   
+        size_t delta= i;
+        while(delta)
+        {
+            if(delta &amp; 1u)
+            {
+                acc_mul= acc_mul * cur_mul;
+                acc_add= acc_add * cur_mul + cur_add;
+            }
+           
+            cur_add= cur_mul * cur_add + cur_add;
+            cur_mul= cur_mul * cur_mul;
+            delta= delta &gt;&gt; 1u;
+        }
+       
+        x= acc_mul * x0 + acc_add;<br>	return x;<br>    }
+};</pre>
+          <code>int main()<br>
+            {<br>
+            &nbsp;&nbsp;&nbsp; RNG rng(1);<br>
+            &nbsp;&nbsp;&nbsp; <br>
+            &nbsp;&nbsp;&nbsp; for(int i= 0; i &lt; 10; i++)<br>
+            &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; // implicite :
+            rng.index(i);<br>
+            &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; printf("%f\n",
+            rng.sample());&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp; // affiche les 10 premiers termes dans
+            l'ordre<br>
+            &nbsp;&nbsp;&nbsp; <br>
+            &nbsp;&nbsp;&nbsp; for(int i= 9; i &gt;= 0; i--)<br>
+            &nbsp;&nbsp;&nbsp; {<br>
+            &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+            rng.index(i);&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; // affiche les memes
+            valeurs dans un ordre different</code><br>
+          <code><code>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+              printf("%f\n", rng.sample());</code><br>
+            &nbsp;&nbsp;&nbsp; }<br>
+            &nbsp;&nbsp;&nbsp; <br>
+            &nbsp;&nbsp;&nbsp; // copie un generateur <br>
+            &nbsp;&nbsp;&nbsp; unsigned int seed=
+            rng.index(9);&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp; // recupere l'etat permettant de generer
+            le terme 9<br>
+            &nbsp;&nbsp;&nbsp; RNG tmp(seed);<br>
+            &nbsp;&nbsp;&nbsp; printf("%f\n",
+            tmp.sample());&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; // genere le terme 9
+            avec un autre generateur<br>
+            &nbsp;&nbsp;&nbsp; <br>
+            &nbsp;&nbsp;&nbsp; return 0;<br>
+            }<br>
+          </code></blockquote>
+        <br>
+        <i>pour les curieux :</i> on peut aussi utiliser une autre
+        famille de générateurs, <a
+          href="https://en.wikipedia.org/wiki/Permuted_congruential_generator">pcg</a>,
+        une évolution des générateurs linéaires, qui ajoute une
+        transformation après le calcul de x<sub>n+1</sub>. Les variantes
+        utilisables dans un shader (état interne sur 32bits) sont
+        décrites sur <a href="http://www.pcg-random.org/">pcg-random.org</a><br>
+        <br>
+        Utilisez RNG::index() pour générer le premier terme de la
+        séquence aléatoire de chaque pixel. Pour les autres termes du
+        pixel, il suffit d'utiliser le générateur "normalement", cf
+        RNG::sample(). Vous pouvez vérifier que tout fonctionne en
+        modifiant votre tp précédent (remplacez les générateurs de la
+        stl par la classe RNG).<br>
+        <br>
+        Utilisez RNG::index() pour initialiser le générateur linéaire de
+        chaque pixel. le shader n'évaluera que l'équivalent de
+        RNG::sample() pour générer les nombres aléatoires nécéssaires
+        pour calculer l'éclairage ambiant du pixel.<br>
+        Comment transmettre au shader l'état du générateur de chaque
+        pixel ? Ecrivez également la fonction sample() dans votre
+        shader. Faut-il aussi stocker l'état du générateur à la fin de
+        l'exécution du shader ?<br>
+        <br>
+      </div>
+      <h3>Partie 4 : trop de triangles</h3>
+      ... à venir. vous pouvez regarder le sujet de l'année précédente
+      pour vous faire une idée.<br>
+      <br>
+      <br>
+    </div>
+  </body>
+</html>
