@@ -120,7 +120,7 @@ int App1::init()
 
 
     // Shader
-    program = Shader("shaders/vertexApp1.glsl", "shaders/fragmentApp1.glsl");
+    program = Shader("src/shaders/vertexApp1.glsl", "src/shaders/fragmentApp1.glsl");
 
     // Meshes
     meshes.push_back(read_mesh("data/cube.obj"));

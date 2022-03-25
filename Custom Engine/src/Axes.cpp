@@ -3,8 +3,8 @@
 
 /* AXES BASE */
 
-const std::string AxesBase::default_vertex_shader = "shaders/vertexGrid.glsl";
-const std::string AxesBase::default_fragment_shader = "shaders/fragmentGrid.glsl";
+const std::string AxesBase::default_vertex_shader = "src/shaders/vertexGrid.glsl";
+const std::string AxesBase::default_fragment_shader = "src/shaders/fragmentGrid.glsl";
 
 void AxesBase::create_buffers()
 {
@@ -75,7 +75,7 @@ void Axes::draw(const Camera& camera, const App& app)
 
 /* GRID */
 
-Grid::Grid() : AxesBase("shaders/vertexGrid.glsl", "shaders/fragmentGrid.glsl")
+Grid::Grid() : AxesBase("src/shaders/vertexGrid.glsl", "src/shaders/fragmentGrid.glsl")
 {
     lines.clear();
 

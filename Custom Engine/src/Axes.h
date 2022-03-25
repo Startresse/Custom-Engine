@@ -79,7 +79,7 @@ private:
 class Axes : public AxesBase
 {
 public:
-    Axes() : AxesBase("shaders/vertexAxes.glsl", "shaders/fragmentAxes.glsl")
+    Axes() : AxesBase("src/shaders/vertexAxes.glsl", "src/shaders/fragmentAxes.glsl")
     {
         lines =
         {

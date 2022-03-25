@@ -147,33 +147,33 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="App.cpp" />
-    <ClCompile Include="App1.cpp" />
-    <ClCompile Include="Axes.cpp" />
-    <ClCompile Include="Camera.cpp" />
-    <ClCompile Include="Color.cpp" />
-    <ClCompile Include="Custom Engine.cpp" />
-    <ClCompile Include="Mesh.cpp" />
-    <ClCompile Include="Shader.cpp" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="..\README.md" />
-    <None Include="shaders\fragmentApp1.glsl" />
-    <None Include="shaders\fragmentAxes.glsl" />
-    <None Include="shaders\fragmentGrid.glsl" />
-    <None Include="shaders\vertexApp1.glsl" />
-    <None Include="shaders\vertexAxes.glsl" />
-    <None Include="shaders\vertexGrid.glsl" />
+    <None Include="src\shaders\fragmentApp1.glsl" />
+    <None Include="src\shaders\fragmentAxes.glsl" />
+    <None Include="src\shaders\fragmentGrid.glsl" />
+    <None Include="src\shaders\vertexApp1.glsl" />
+    <None Include="src\shaders\vertexAxes.glsl" />
+    <None Include="src\shaders\vertexGrid.glsl" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="App.h" />
-    <ClInclude Include="App1.h" />
-    <ClInclude Include="Axes.h" />
-    <ClInclude Include="Camera.h" />
-    <ClInclude Include="Color.h" />
-    <ClInclude Include="Direction.h" />
-    <ClInclude Include="Mesh.h" />
-    <ClInclude Include="Shader.h" />
+    <ClCompile Include="src\App.cpp" />
+    <ClCompile Include="src\App1.cpp" />
+    <ClCompile Include="src\Axes.cpp" />
+    <ClCompile Include="src\Camera.cpp" />
+    <ClCompile Include="src\Color.cpp" />
+    <ClCompile Include="src\Custom Engine.cpp" />
+    <ClCompile Include="src\Mesh.cpp" />
+    <ClCompile Include="src\Shader.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\App.h" />
+    <ClInclude Include="src\App1.h" />
+    <ClInclude Include="src\Axes.h" />
+    <ClInclude Include="src\Camera.h" />
+    <ClInclude Include="src\Color.h" />
+    <ClInclude Include="src\Direction.h" />
+    <ClInclude Include="src\Mesh.h" />
+    <ClInclude Include="src\Shader.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
