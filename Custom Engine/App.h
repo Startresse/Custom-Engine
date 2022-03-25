@@ -40,8 +40,8 @@ public:
     // TODO protected ?
     Camera camera;
 
-    int window_width();
-    int window_height();
+    int window_width() const;
+    int window_height() const;
 
     static constexpr unsigned int default_width = 640;
     static constexpr unsigned int default_height = 480;
@@ -51,8 +51,6 @@ public:
 
 protected:
     Window window;
-    int width;
-    int height;
 
     /// <summary>
     /// Used first and once at the run() function call.

@@ -160,8 +160,10 @@
     <None Include="..\README.md" />
     <None Include="shaders\fragmentApp1.glsl" />
     <None Include="shaders\fragmentAxes.glsl" />
+    <None Include="shaders\fragmentGrid.glsl" />
     <None Include="shaders\vertexApp1.glsl" />
     <None Include="shaders\vertexAxes.glsl" />
+    <None Include="shaders\vertexGrid.glsl" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h" />

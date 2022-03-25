@@ -36,8 +36,6 @@ Window App::create_window(int w, int h, int major, int minor)
     }
     glfwMakeContextCurrent(window);
 
-    glfwGetFramebufferSize(window, &width, &height);
-
     // use GLEW modern approach to retrieving function pointers and extensions
     glewExperimental = GL_TRUE;
     if (glewInit() != GLEW_OK)
@@ -53,14 +51,16 @@ Window App::create_window(int w, int h, int major, int minor)
     return window;
 }
 
-int App::window_width()
+int App::window_width() const
 {
+    int width, height;
     glfwGetFramebufferSize(window, &width, &height);
     return width;
 }
 
-int App::window_height()
+int App::window_height() const
 {
+    int width, height;
     glfwGetFramebufferSize(window, &width, &height);
     return height;
 }

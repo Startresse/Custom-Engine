@@ -160,8 +160,9 @@ int App1::render()
     trans = glm::translate(trans, glm::vec3(-0.5f));
     //trans = glm::rotate(trans, 45.0f, glm::normalize(glm::vec3(0.5, 0.5, 0.0)));
 
+    //axes.draw(proj * view * glm::translate(glm::mat4(1.f), camera.position() - camera.direction()));
+    axes.draw(camera, *this);
     grid.draw(mvp);
-    axes.draw(mvp);
     // grid won't display over anything
     //glClear(GL_DEPTH_BUFFER_BIT);
 

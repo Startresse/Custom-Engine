@@ -13,6 +13,8 @@
 #include "Shader.h"
 #include "Color.h"
 #include "Direction.h"
+#include "Camera.h"
+#include "App.h"
 
 struct Point
 {
@@ -51,7 +53,7 @@ public:
     static const std::string default_vertex_shader;
     static const std::string default_fragment_shader;
 
-    static constexpr float line_size = 1.f;
+    virtual float line_size() { return 1.f; };
 
 protected:
 
@@ -79,7 +81,7 @@ class Axes : public AxesBase
 public:
     Axes() : AxesBase("shaders/vertexAxes.glsl", "shaders/fragmentAxes.glsl")
     {
-        lines = 
+        lines =
         {
             Line({0, 0, 0}, Direction::right, Color::grid_red),
             Line({0, 0, 0}, Direction::up, Color::grid_blue),
@@ -87,7 +89,10 @@ public:
         };
     }
 
-    void draw(const glm::mat4& m);
+    void draw(const Camera& camera, const App& app);
+    float line_size() { return 2.f; };
+
+    static constexpr float axes_pixel_size = 35;
 };
 
 class Grid : public AxesBase
@@ -98,6 +103,6 @@ public:
 
     void draw(const glm::mat4& m);
 
-    static constexpr float line_size = 2.f;
+    float line_size() { return 2.f; };
     static constexpr int size = 10;
 };

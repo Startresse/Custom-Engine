@@ -3,8 +3,8 @@
 
 /* AXES BASE */
 
-const std::string AxesBase::default_vertex_shader = "shaders/vertexAxes.glsl";
-const std::string AxesBase::default_fragment_shader = "shaders/fragmentAxes.glsl";
+const std::string AxesBase::default_vertex_shader = "shaders/vertexGrid.glsl";
+const std::string AxesBase::default_fragment_shader = "shaders/fragmentGrid.glsl";
 
 void AxesBase::create_buffers()
 {
@@ -40,7 +40,7 @@ void AxesBase::pre_draw()
 
     glGetFloatv(GL_LINE_WIDTH, &current_line_width);
 
-    glLineWidth(line_size);
+    glLineWidth(line_size());
 }
 
 void AxesBase::post_draw()
@@ -57,17 +57,25 @@ void AxesBase::post_draw()
 
 /* AXES */
 
-void Axes::draw(const glm::mat4& m)
+void Axes::draw(const Camera& camera, const App& app)
 {
     pre_draw();
-    program.setMat4("MVP", m);
+
+    glm::mat4 p = glm::mat4(1.f);
+    p = glm::translate(p, camera.position() - camera.direction());
+    p = glm::scale(p, glm::vec3(axes_pixel_size / app.window_height()));
+    glm::mat4 mvp = camera.projection() * camera.view() * p;
+
+    program.setMat4("MVP", mvp);
+    program.setInt("window_width", app.window_width());
+    program.setInt("window_height", app.window_height());
     post_draw();
 }
 
 
 /* GRID */
 
-Grid::Grid() : AxesBase("shaders/vertexAxes.glsl", "shaders/fragmentAxes.glsl")
+Grid::Grid() : AxesBase("shaders/vertexGrid.glsl", "shaders/fragmentGrid.glsl")
 {
     lines.clear();
 
@@ -99,4 +107,3 @@ void Grid::draw(const glm::mat4& m)
     program.setMat4("MVP", m);
     post_draw();
 }
-
