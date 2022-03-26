@@ -8,7 +8,10 @@ const std::string AxesBase::default_fragment_shader = "src/shaders/fragmentGrid.
 
 void AxesBase::create_buffers()
 {
-    program = Shader(vertex_shader.c_str(), fragment_shader.c_str());
+    if (!shader.empty())
+        program = Shader(shader);
+    else
+        program = Shader(vertex_shader, fragment_shader);
 
     glGenVertexArrays(1, &vao);
     glGenBuffers(1, &vbo);

@@ -27,19 +27,16 @@
     <None Include="src\shaders\fragmentApp1.glsl">
       <Filter>Source Files\Shaders</Filter>
     </None>
-    <None Include="src\shaders\fragmentAxes.glsl">
-      <Filter>Source Files\Shaders</Filter>
-    </None>
     <None Include="src\shaders\fragmentGrid.glsl">
       <Filter>Source Files\Shaders</Filter>
     </None>
     <None Include="src\shaders\vertexApp1.glsl">
       <Filter>Source Files\Shaders</Filter>
     </None>
-    <None Include="src\shaders\vertexAxes.glsl">
+    <None Include="src\shaders\vertexGrid.glsl">
       <Filter>Source Files\Shaders</Filter>
     </None>
-    <None Include="src\shaders\vertexGrid.glsl">
+    <None Include="src\shaders\Axes.glsl">
       <Filter>Source Files\Shaders</Filter>
     </None>
   </ItemGroup>

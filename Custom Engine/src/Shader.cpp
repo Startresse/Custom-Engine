@@ -1,40 +1,82 @@
 #include "Shader.h"
 
-Shader::Shader(const char* vertexPath, const char* fragmentPath)
+Shader::Shader(const std::string& shader_path)
 {
-    // 1. retrieve the vertex/fragment source code from filePath
-    std::string vertexCode;
-    std::string fragmentCode;
-    std::ifstream vShaderFile;
-    std::ifstream fShaderFile;
+    ShaderCode sc;
+    std::ifstream file;
+
     // ensure ifstream objects can throw exceptions:
-    vShaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
-    fShaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
+    file.exceptions(std::ifstream::failbit | std::ifstream::badbit);
     try
     {
-        // open files
-        vShaderFile.open(vertexPath);
-        fShaderFile.open(fragmentPath);
-        std::stringstream vShaderStream, fShaderStream;
-        // read file's buffer contents into streams
-        vShaderStream << vShaderFile.rdbuf();
-        fShaderStream << fShaderFile.rdbuf();
-        // close file handlers
-        vShaderFile.close();
-        fShaderFile.close();
-        // convert stream into string
-        vertexCode = vShaderStream.str();
-        fragmentCode = fShaderStream.str();
+        file.open(shader_path);
+
+        std::stringstream stream;
+        stream << file.rdbuf();
+
+        file.close();
+
+        std::string vertex_def = "\n#define VERTEX_SHADER\n";
+        std::string fragment_def = "\n#define FRAGMENT_SHADER\n";
+
+        // #version must be the first line of the file
+        // defines are then inserted after the first line
+        size_t b = stream.str().find("\n");
+
+        sc.vertex_code = stream.str();
+        sc.vertex_code.insert(b, vertex_def);
+
+        sc.fragment_code = stream.str();
+        sc.fragment_code.insert(b, fragment_def);
+
     }
     catch (std::ifstream::failure e)
     {
         std::cout << "ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ" << std::endl;
     }
-    const char* vShaderCode = vertexCode.c_str();
-    const char* fShaderCode = fragmentCode.c_str();
 
-    // 2. compile shaders
+    compile_shaders(sc);
+}
+
+Shader::Shader(const std::string& vertexPath, const std::string& fragmentPath)
+{
+    ShaderCode sc;
+    std::ifstream v_file;
+    std::ifstream f_file;
+
+    // ensure ifstream objects can throw exceptions:
+    v_file.exceptions(std::ifstream::failbit | std::ifstream::badbit);
+    f_file.exceptions(std::ifstream::failbit | std::ifstream::badbit);
+    try
+    {
+        v_file.open(vertexPath);
+        f_file.open(fragmentPath);
+
+        std::stringstream v_stream, f_stream;
+        v_stream << v_file.rdbuf();
+        f_stream << f_file.rdbuf();
+
+        v_file.close();
+        f_file.close();
+
+        sc.vertex_code = v_stream.str();
+        sc.fragment_code = f_stream.str();
+    }
+    catch (std::ifstream::failure e)
+    {
+        std::cout << "ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ" << std::endl;
+    }
+
+    compile_shaders(sc);
+}
+
+void Shader::compile_shaders(const ShaderCode& sc)
+{
+    const char* vShaderCode = sc.vertex_code.c_str();
+    const char* fShaderCode = sc.fragment_code.c_str();
+
     unsigned int vertex, fragment;
+
     int success;
     char infoLog[512];
 
@@ -88,7 +130,7 @@ void Shader::use()
 
 void Shader::setBool(const std::string& name, bool value) const
 {
-    glUniform1i(glGetUniformLocation(ID, name.c_str()), (int)value);
+    glUniform1i(glGetUniformLocation(ID, name.c_str()), static_cast<int>(value));
 }
 
 void Shader::setInt(const std::string& name, int value) const

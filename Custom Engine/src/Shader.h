@@ -15,6 +15,13 @@
 #include <iostream>
 #include <cassert>
 
+struct ShaderCode
+{
+    std::string vertex_code;
+    std::string fragment_code;
+
+    // compute, geometry, etc...
+};
 
 class Shader
 {
@@ -22,7 +29,8 @@ public:
     unsigned int ID;
 
     Shader() : ID(0) {}
-    Shader(const char* vertexPath, const char* fragmentPath);
+    Shader(const std::string& shader_path);
+    Shader(const std::string& vertexPath, const std::string& fragmentPath);
 
     void use();
 
@@ -31,5 +39,8 @@ public:
     void setFloat(const std::string& name, float value) const;
     void setMat4(const std::string& name, glm::mat4 value) const;
     void setVec3(const std::string& name, glm::vec3 value) const;
+
+private:
+    void compile_shaders(const ShaderCode& sc);
 };
 

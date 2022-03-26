@@ -45,6 +45,7 @@ class AxesBase
 {
 public:
     AxesBase() : AxesBase(default_vertex_shader, default_fragment_shader) {}
+    AxesBase(const std::string& _shader) : shader(_shader), vao(0), vbo(0) {};
     AxesBase(const std::string& vs, const std::string& fs) : vertex_shader(vs), fragment_shader(fs), vao(0), vbo(0) {};
 
     // Keybind this to toggle or untoggle in App keycallbacks
@@ -64,6 +65,7 @@ protected:
     void post_draw();
 
     std::vector<Line> lines;
+    std::string shader;
     std::string vertex_shader;
     std::string fragment_shader;
 
@@ -79,7 +81,7 @@ private:
 class Axes : public AxesBase
 {
 public:
-    Axes() : AxesBase("src/shaders/vertexAxes.glsl", "src/shaders/fragmentAxes.glsl")
+    Axes() : AxesBase("src/shaders/Axes.glsl")
     {
         lines =
         {

@@ -1,5 +1,9 @@
 #version 330 core
 
+
+
+#ifdef VERTEX_SHADER
+
 layout (location = 0) in vec3 position;
 layout (location = 1) in vec4 c;
 
@@ -20,3 +24,18 @@ void main()
     float y_percent = ((window_height / 2.0) - pixel_offset) / (window_height / 2.0);
     gl_Position.xy += vec2(x_percent, y_percent) * gl_Position.w;
 }
+#endif
+
+
+
+#ifdef FRAGMENT_SHADER
+
+in vec4 color;
+
+out vec4 frag_color;
+
+void main()
+{
+    frag_color = vec4(color);
+} 
+#endif
