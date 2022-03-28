@@ -1,5 +1,6 @@
 #include "Axes.h"
 
+using namespace AxesStructs;
 
 /* AXES BASE */
 

@@ -16,77 +16,81 @@
 #include "Camera.h"
 #include "App.h"
 
-struct Point
+namespace AxesStructs
 {
-    Point() : Point(glm::vec3(0.0f, 0.0f, 0.0f)) {}
-    Point(glm::vec3 p) : Point(p, Color::white) {}
-    Point(glm::vec3 p, Color c) : coord(p), color(c) {}
+    struct Point
+    {
+        Point() : Point(glm::vec3(0.0f, 0.0f, 0.0f)) {}
+        Point(glm::vec3 p) : Point(p, Color::white) {}
+        Point(glm::vec3 p, Color c) : coord(p), color(c) {}
 
-    glm::vec3 coord;
-    Color color;
-};
+        glm::vec3 coord;
+        Color color;
+    };
 
-struct Line
-{
-    Line() : Line({ 0, 0, 0 }, { 0, 0, 0 }) {}
-    Line(glm::vec3 start, glm::vec3 end) : Line(start, end, Color::white) {}
-    Line(glm::vec3 start, glm::vec3 end, Color color) : a(start, color), b(end, color) {}
+    struct Line
+    {
+        Line() : Line({ 0, 0, 0 }, { 0, 0, 0 }) {}
+        Line(glm::vec3 start, glm::vec3 end) : Line(start, end, Color::white) {}
+        Line(glm::vec3 start, glm::vec3 end, Color color) : a(start, color), b(end, color) {}
 
-    Point a;
-    Point b;
-};
+        Point a;
+        Point b;
+    };
 
-/// <summary>
-/// Automates all GL parts of grid display.
-/// Just inherit this class and create a draw function which calk pre-draw and post draw
-/// to setup shaders uniforms. (see Grid::draw or Axes::draw)
-/// </summary>
-class AxesBase
-{
-public:
-    AxesBase() : AxesBase(default_shader) {}
-    AxesBase(const std::string& _shader) : shader(_shader), vao(0), vbo(0) {};
-    AxesBase(const std::string& vs, const std::string& fs) : vertex_shader(vs), fragment_shader(fs), vao(0), vbo(0) {};
+    /// <summary>
+    /// Automates all GL parts of grid display.
+    /// Just inherit this class and create a draw function which calk pre-draw and post draw
+    /// to setup shaders uniforms. (see Grid::draw or Axes::draw)
+    /// </summary>
+    class AxesBase
+    {
+    public:
+        AxesBase() : AxesBase(default_shader) {}
+        AxesBase(const std::string& _shader) : shader(_shader), vao(0), vbo(0) {};
+        AxesBase(const std::string& vs, const std::string& fs) : vertex_shader(vs), fragment_shader(fs), vao(0), vbo(0) {};
 
-    // Keybind this to toggle or untoggle in App keycallbacks
-    void toggle() { display = !display; }
+        // Keybind this to toggle or untoggle in App keycallbacks
+        void toggle() { display = !display; }
 
-    static const std::string default_shader;
+        static const std::string default_shader;
 
-    virtual float line_size() { return 1.f; };
+        virtual float line_size() { return 1.f; };
 
-protected:
+    protected:
 
-    bool display = true;
+        bool display = true;
 
-    void create_buffers();
-    void pre_draw();
-    void post_draw();
+        void create_buffers();
+        void pre_draw();
+        void post_draw();
 
-    std::vector<Line> lines;
-    std::string shader;
-    std::string vertex_shader;
-    std::string fragment_shader;
+        std::vector<Line> lines;
+        std::string shader;
+        std::string vertex_shader;
+        std::string fragment_shader;
 
-    unsigned int vao, vbo;
-    Shader program;
+        unsigned int vao, vbo;
+        Shader program;
 
-private:
+    private:
 
-    float current_line_width = 0.f;
+        float current_line_width = 0.f;
 
-};
+    };
 
-class Axes : public AxesBase
+}
+
+class Axes : public AxesStructs::AxesBase
 {
 public:
     Axes() : AxesBase("src/shaders/axes.glsl")
     {
         lines =
         {
-            Line({0, 0, 0}, Direction::right, Color::grid_red),
-            Line({0, 0, 0}, Direction::up, Color::grid_blue),
-            Line({0, 0, 0}, Direction::forward, Color::grid_green),
+            AxesStructs::Line({0, 0, 0}, Direction::right, Color::grid_red),
+            AxesStructs::Line({0, 0, 0}, Direction::up, Color::grid_blue),
+            AxesStructs::Line({0, 0, 0}, Direction::forward, Color::grid_green),
         };
     }
 
@@ -96,9 +100,9 @@ public:
     static constexpr float axes_pixel_size = 35;
 };
 
-class Grid : public AxesBase
-{
-public:
+class Grid : public AxesStructs::AxesBase
+{                    
+public:              
 
     Grid();
 
