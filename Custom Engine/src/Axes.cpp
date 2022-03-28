@@ -4,14 +4,9 @@ using namespace AxesStructs;
 
 /* AXES BASE */
 
-const std::string AxesBase::default_shader = "src/shaders/grid.glsl";
-
 void AxesBase::create_buffers()
 {
-    if (!shader.empty())
-        program = Shader(shader);
-    else
-        program = Shader(vertex_shader, fragment_shader);
+    program = Shader(shader);
 
     glGenVertexArrays(1, &vao);
     glGenBuffers(1, &vbo);
@@ -59,6 +54,16 @@ void AxesBase::post_draw()
 
 
 /* AXES */
+
+Axes::Axes() : AxesBase("src/shaders/axes.glsl")
+{
+    lines =
+    {
+        Line({0, 0, 0}, Direction::right, Color::grid_red),
+        Line({0, 0, 0}, Direction::up, Color::grid_blue),
+        Line({0, 0, 0}, Direction::forward, Color::grid_green),
+    };
+}
 
 void Axes::draw(const Camera& camera, const App& app)
 {

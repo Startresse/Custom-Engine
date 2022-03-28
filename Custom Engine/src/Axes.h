@@ -46,14 +46,11 @@ namespace AxesStructs
     class AxesBase
     {
     public:
-        AxesBase() : AxesBase(default_shader) {}
-        AxesBase(const std::string& _shader) : shader(_shader), vao(0), vbo(0) {};
-        AxesBase(const std::string& vs, const std::string& fs) : vertex_shader(vs), fragment_shader(fs), vao(0), vbo(0) {};
+        AxesBase() : AxesBase("src/shaders/grid.glsl") {}
+        AxesBase(const std::string& _shader) : shader(_shader), vao(0), vbo(0) {}
 
         // Keybind this to toggle or untoggle in App keycallbacks
         void toggle() { display = !display; }
-
-        static const std::string default_shader;
 
         virtual float line_size() { return 1.f; };
 
@@ -67,8 +64,6 @@ namespace AxesStructs
 
         std::vector<Line> lines;
         std::string shader;
-        std::string vertex_shader;
-        std::string fragment_shader;
 
         unsigned int vao, vbo;
         Shader program;
@@ -84,20 +79,14 @@ namespace AxesStructs
 class Axes : public AxesStructs::AxesBase
 {
 public:
-    Axes() : AxesBase("src/shaders/axes.glsl")
-    {
-        lines =
-        {
-            AxesStructs::Line({0, 0, 0}, Direction::right, Color::grid_red),
-            AxesStructs::Line({0, 0, 0}, Direction::up, Color::grid_blue),
-            AxesStructs::Line({0, 0, 0}, Direction::forward, Color::grid_green),
-        };
-    }
+
+    Axes();
 
     void draw(const Camera& camera, const App& app);
+
     float line_size() { return 2.f; };
 
-    static constexpr float axes_pixel_size = 35;
+    static constexpr float axes_pixel_size = 35.f;
 };
 
 class Grid : public AxesStructs::AxesBase
@@ -109,5 +98,6 @@ public:
     void draw(const glm::mat4& m);
 
     float line_size() { return 2.f; };
+
     static constexpr int size = 10;
 };
