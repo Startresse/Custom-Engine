@@ -148,11 +148,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <None Include="..\README.md" />
-    <None Include="src\shaders\Axes.glsl" />
-    <None Include="src\shaders\fragmentApp1.glsl" />
-    <None Include="src\shaders\fragmentGrid.glsl" />
-    <None Include="src\shaders\vertexApp1.glsl" />
-    <None Include="src\shaders\vertexGrid.glsl" />
+    <None Include="src\shaders\axes.glsl" />
+    <None Include="src\shaders\default_shader.glsl" />
+    <None Include="src\shaders\grid.glsl" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\App.cpp" />

@@ -24,19 +24,13 @@
     <None Include="..\README.md">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="src\shaders\fragmentApp1.glsl">
+    <None Include="src\shaders\axes.glsl">
       <Filter>Source Files\Shaders</Filter>
     </None>
-    <None Include="src\shaders\fragmentGrid.glsl">
+    <None Include="src\shaders\default_shader.glsl">
       <Filter>Source Files\Shaders</Filter>
     </None>
-    <None Include="src\shaders\vertexApp1.glsl">
-      <Filter>Source Files\Shaders</Filter>
-    </None>
-    <None Include="src\shaders\vertexGrid.glsl">
-      <Filter>Source Files\Shaders</Filter>
-    </None>
-    <None Include="src\shaders\Axes.glsl">
+    <None Include="src\shaders\grid.glsl">
       <Filter>Source Files\Shaders</Filter>
     </None>
   </ItemGroup>

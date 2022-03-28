@@ -44,15 +44,14 @@ struct Line
 class AxesBase
 {
 public:
-    AxesBase() : AxesBase(default_vertex_shader, default_fragment_shader) {}
+    AxesBase() : AxesBase(default_shader) {}
     AxesBase(const std::string& _shader) : shader(_shader), vao(0), vbo(0) {};
     AxesBase(const std::string& vs, const std::string& fs) : vertex_shader(vs), fragment_shader(fs), vao(0), vbo(0) {};
 
     // Keybind this to toggle or untoggle in App keycallbacks
     void toggle() { display = !display; }
 
-    static const std::string default_vertex_shader;
-    static const std::string default_fragment_shader;
+    static const std::string default_shader;
 
     virtual float line_size() { return 1.f; };
 
@@ -81,7 +80,7 @@ private:
 class Axes : public AxesBase
 {
 public:
-    Axes() : AxesBase("src/shaders/Axes.glsl")
+    Axes() : AxesBase("src/shaders/axes.glsl")
     {
         lines =
         {
